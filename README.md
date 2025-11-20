@@ -1,7 +1,3 @@
-<h3 align="center">
-  BOOK EDITOR
-</h3>
-
 <p align="center">
   <a href="https://modrinth.com/mod/book-editor">
     <img src="https://img.shields.io/modrinth/dt/book-editor?color=green&style=for-the-badge&logo=modrinth" alt="Modrinth Downloads"/>
@@ -14,93 +10,30 @@
   </a>
 </p>
 
-## Description
-
-Creative Book Editor introduces a new item: the **Creative Book**, crafted from a feather, gold nugget, and paper.
-
 <p align="center">
-  <img width="380" alt="Crafting Recipe" src="https://github.com/user-attachments/assets/c075b751-f28c-41ea-a69e-2c0e43bed127" />
+  <img src="https://github.com/user-attachments/assets/2901d74f-6a40-4411-b642-46b910dcaf10" alt="Header">
 </p>
 
----
-
-This item unlocks advanced book editing features:
-- Draw directly onto book pages with creative tools  
-- Add and edit textboxes anywhere  
-- Insert online images via URL for instant in-book preview  
-
----
-
 <p align="center">
-  <img width="420" alt="Drawing Tools" src="https://github.com/user-attachments/assets/f678ec22-d05f-4df3-a27b-bd29c9bca35c" style="margin-right: 24px;" />
-  <img width="420" alt="Textbox Editing" src="https://github.com/user-attachments/assets/08d8fb0d-616f-420d-ae98-39cd6dd85e11" style="margin-left: 24px;" />
-</p>
-<p align="center">
-  <img width="420" alt="Image Insert" src="https://github.com/user-attachments/assets/17d4f5ee-3348-4f9e-be71-d02c4e5bfe57" />
+  <img src="https://github.com/user-attachments/assets/2ea4fbab-f858-4909-9dc1-10ae85d4f006" alt="Image interaction" width="320"/>
 </p>
 
----
-
-Books can be shared with friends for collaborative editing.  
-When finished, simply sign the book to lock further edits and confirm your authorship.
-
 <p align="center">
-  <img width="420" alt="Signed Book" src="https://github.com/user-attachments/assets/f315a1e8-d377-4eeb-b2e8-086af28ef3cc" />
+  <img src="https://github.com/user-attachments/assets/e838113e-26af-4d4f-bdd8-e642ced2f45e" alt="editor-image"/>
 </p>
 
----
-
-To ensure stability, the mod monitors the book's NBT size.  
-If the NBT limit is reached, editing is blocked and a warning appears.
-
 <p align="center">
-  <img width="420" alt="Locked Book" src="https://github.com/user-attachments/assets/6d196a0b-605c-4868-98d9-b60b3aed023e" />
+  <img src="https://github.com/user-attachments/assets/394e475a-b6cf-4633-a0f3-f36e28d6a887" alt="Draw" width="320"/>
 </p>
 
----
-
 <p align="center">
-  <img width="420" alt="Book Example" src="https://github.com/user-attachments/assets/2ddb4a0d-6352-4d36-a0a4-c2146a6b0ac6" />
+  <img src="https://github.com/user-attachments/assets/d39cdd76-b5ca-40df-9e4f-d5d08c2c632c" alt="editor-draw"/>
 </p>
 
----
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a0e350e0-c8ea-4ce0-8d66-e12864193f1e" alt="Textbox" width="320"/>
+</p>
 
-## Features
-
-- Intuitive GUI: draw, write, insert images from the web  
-- Share and collaboratively edit books  
-- Sign books to lock editing and confirm authorship  
-- Automatic NBT limit protection (prevents Minecraft crashes)  
-- Multilingual support:
-  - Arabic (ar)
-  - Russian (ru)
-  - Spanish (es)
-  - English (en)
-  - French (fr)
-  - Simplified Chinese (zh)
-  - Korean (ko)
-  - Italian (it)
-  - Hindi (hi)
-  - German (de)
-
----
-
-## Requirements
-
-- Minecraft `1.20.1`
-- [Fabric API](https://modrinth.com/mod/fabric-api) `0.92.6+1.20.1`
-
----
-
-## License
-
-Apache 2.0 © [Iliiasik](https://github.com/Iliiasik)
-
----
-
-**Repository:** [Iliiasik/Book-Editor](https://github.com/Iliiasik/Book-Editor)
-
-If you find bugs, please [open an issue](https://github.com/Iliiasik/Book-Editor/issues).  
-Pull requests are welcome.
-
-> The mod is still in beta.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/aed3f91a-5416-4ba6-8f87-7b1c69ce588f" alt="editor-text"/>
+</p>
