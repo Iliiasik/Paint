@@ -12,12 +12,11 @@ public class IconButton extends ButtonWidget {
     private float hoverProgress = 0.0f;
     private long lastFrameTime = System.currentTimeMillis();
 
-    private static final int BG_COLOR = 0xFF3C3C3C;
-    private static final int BG_HOVER = 0xFF505050;
-    private static final int BG_SELECTED = 0xFF1E1E1E;
-    private static final int BORDER_NORMAL = 0xFF555555;
-    private static final int BORDER_SELECTED = 0xFF00BFFF;
-    private static final int SHADOW = 0x33000000;
+    private static final int BG_COLOR = 0xFFF0E8DC;
+    private static final int BG_SELECTED = 0xFFE8B84C;
+    private static final int BORDER_NORMAL = 0xFF8B8B8B;
+    private static final int BORDER_HOVER = 0xFFE8B84C;
+    private static final int SHADOW = 0x331E1E1E;
 
     public IconButton(int x, int y, int width, int height, Identifier iconTexture, Text tooltip, PressAction onPress) {
         super(x, y, width, height, Text.empty(), onPress, DEFAULT_NARRATION_SUPPLIER);
@@ -42,9 +41,9 @@ public class IconButton extends ButtonWidget {
         boolean isHovering = this.isHovered();
 
         if (isHovering && hoverProgress < 1.0f) {
-            hoverProgress = Math.min(1.0f, hoverProgress + deltaTime * 5.0f);
+            hoverProgress = Math.min(1.0f, hoverProgress + deltaTime * 6.0f);
         } else if (!isHovering && hoverProgress > 0.0f) {
-            hoverProgress = Math.max(0.0f, hoverProgress - deltaTime * 5.0f);
+            hoverProgress = Math.max(0.0f, hoverProgress - deltaTime * 6.0f);
         }
 
         int x = getX();
@@ -54,10 +53,17 @@ public class IconButton extends ButtonWidget {
 
         ctx.fill(x + 1, y + h, x + w - 1, y + h + 1, SHADOW);
 
-        int bgColor = selected ? BG_SELECTED : interpolateColor(BG_COLOR, BG_HOVER, hoverProgress);
+        int bgColor = selected ? BG_SELECTED : BG_COLOR;
         ctx.fill(x, y, x + w, y + h, bgColor);
 
-        int borderColor = selected ? BORDER_SELECTED : (isHovering ? 0xFF666666 : BORDER_NORMAL);
+        int topHighlight = addAlpha(0xFFFFFFFF, 0.3f);
+        ctx.fill(x + 1, y + 1, x + w - 1, y + 2, topHighlight);
+
+        int bottomShadow = addAlpha(0xFF000000, 0.15f);
+        ctx.fill(x + 1, y + h - 2, x + w - 1, y + h - 1, bottomShadow);
+
+        int borderColor = selected ? BORDER_NORMAL : interpolateColor(BORDER_NORMAL, BORDER_HOVER, hoverProgress);
+
         int bw = 1;
 
         ctx.fill(x, y, x + w, y + bw, borderColor);
@@ -105,5 +111,10 @@ public class IconButton extends ButtonWidget {
         int b = (int) (b1 + (b2 - b1) * t);
 
         return (a << 24) | (r << 16) | (g << 8) | b;
+    }
+
+    private int addAlpha(int color, float alpha) {
+        int a = (int) (255 * alpha);
+        return (a << 24) | (color & 0xFFFFFF);
     }
 }

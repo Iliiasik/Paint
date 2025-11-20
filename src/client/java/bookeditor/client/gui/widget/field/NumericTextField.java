@@ -7,10 +7,10 @@ import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
 public class NumericTextField extends TextFieldWidget {
-    private static final int BACKGROUND = 0xFF2D2D30;
-    private static final int BORDER = 0xFF3E3E42;
-    private static final int BORDER_FOCUSED = 0xFF007ACC;
-    private static final int TEXT_COLOR = 0xFFE0E0E0;
+    private static final int BACKGROUND = 0xFFF0E8DC;
+    private static final int BORDER = 0xFF8B8B8B;
+    private static final int BORDER_FOCUSED = 0xFF373737;
+    private static final int TEXT_COLOR = 0xFF000000;
 
     private Runnable onEnterPressed;
 
@@ -58,7 +58,7 @@ public class NumericTextField extends TextFieldWidget {
         context.fill(x, y, x + w, y + h, BACKGROUND);
 
         int borderColor = this.isFocused() ? BORDER_FOCUSED : BORDER;
-        int borderWidth = this.isFocused() ? 2 : 1;
+        int borderWidth = 1;
 
         context.fill(x, y, x + w, y + borderWidth, borderColor);
         context.fill(x, y + h - borderWidth, x + w, y + h, borderColor);

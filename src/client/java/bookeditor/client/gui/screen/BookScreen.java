@@ -254,7 +254,7 @@ public class BookScreen extends Screen implements WidgetHost {
             double frac = nbtMax > 0 ? (currentNbtSize / (double) nbtMax) : 0.0;
             int pct = (int)Math.round(frac * 100.0);
             String s = String.format("NBT: %s / %s (%d%%) - clientMax=%d, serverConst=%d", cur, max, pct, nbtMax, PacketByteBuf.MAX_READ_NBT_SIZE);
-            ctx.drawTextWithShadow(textRenderer, Text.literal(s), 8, 8, 0xFFFFFF00);
+            ctx.drawText(textRenderer, Text.literal(s), 8, 8, 0xFFFFFF00, false);
         }
 
         if (bookNavigator != null) {

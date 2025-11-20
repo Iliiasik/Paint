@@ -99,6 +99,6 @@ public class BookNavigator {
         String counter = "/ " + totalPages;
         int counterX = pageField.getX() + pageField.getWidth() + 5;
         int counterY = pageField.getY() + (pageField.getHeight() - 8) / 2;
-        ctx.drawText(textRenderer, Text.literal(counter), counterX, counterY, 0xFFE0E0E0, false);
+        ctx.drawText(textRenderer, Text.literal(counter), counterX, counterY, 0xFF000000, false);
     }
 }

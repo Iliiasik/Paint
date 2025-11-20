@@ -33,12 +33,12 @@ public final class LimitBadgeRenderer {
         if (bX + bW + 4 > screenWidth) bX = screenWidth - bW - 4;
         int bY = toolbarY + toolbarBtnHeight + 36;
 
-        ctx.fill(bX, bY, bX + bW, bY + height, 0xEEFF4444);
-        ctx.fill(bX - 1, bY - 1, bX + bW + 1, bY, 0xFF662222);
-        ctx.fill(bX - 1, bY + height, bX + bW + 1, bY + height + 1, 0xFF662222);
-        ctx.fill(bX - 1, bY, bX, bY + height, 0xFF662222);
-        ctx.fill(bX + bW, bY, bX + bW + 1, bY + height, 0xFF662222);
+        ctx.fill(bX, bY, bX + bW, bY + height, 0xEEFFAA88);
+        ctx.fill(bX - 1, bY - 1, bX + bW + 1, bY, 0xFF373737);
+        ctx.fill(bX - 1, bY + height, bX + bW + 1, bY + height + 1, 0xFF373737);
+        ctx.fill(bX - 1, bY, bX, bY + height, 0xFF373737);
+        ctx.fill(bX + bW, bY, bX + bW + 1, bY + height, 0xFF373737);
 
-        ctx.drawTextWithShadow(textRenderer, msg, bX + padX, bY + padY, 0xFFFFFFFF);
+        ctx.drawText(textRenderer, msg, bX + padX, bY + padY, 0xFF000000, false);
     }
 }

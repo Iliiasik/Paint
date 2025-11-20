@@ -9,11 +9,13 @@ public class CustomButton extends ButtonWidget {
     private float hoverProgress = 0.0f;
     private long lastFrameTime = System.currentTimeMillis();
 
-    private static final int PRIMARY_COLOR = 0xFF4A90E2;
-    private static final int PRIMARY_HOVER = 0xFF5BA3F5;
-    private static final int BORDER_COLOR = 0xFF357ABD;
-    private static final int TEXT_COLOR = 0xFFFFFFFF;
-    private static final int SHADOW_COLOR = 0x44000000;
+    private static final int PRIMARY_COLOR = 0xFFF0E8DC;
+    private static final int DISABLED_COLOR = 0xFFD4C8B8;
+    private static final int BORDER_NORMAL = 0xFF8B8B8B;
+    private static final int BORDER_HOVER = 0xFFE8B84C;
+    private static final int TEXT_COLOR = 0xFF000000;
+    private static final int TEXT_DISABLED = 0xFF6B5F53;
+    private static final int SHADOW_COLOR = 0x441E1E1E;
 
     public CustomButton(int x, int y, int width, int height, Text message, PressAction onPress) {
         super(x, y, width, height, message, onPress, DEFAULT_NARRATION_SUPPLIER);
@@ -33,12 +35,10 @@ public class CustomButton extends ButtonWidget {
         boolean isHovering = this.isHovered();
 
         if (isHovering && hoverProgress < 1.0f) {
-            hoverProgress = Math.min(1.0f, hoverProgress + deltaTime * 4.0f);
+            hoverProgress = Math.min(1.0f, hoverProgress + deltaTime * 6.0f);
         } else if (!isHovering && hoverProgress > 0.0f) {
-            hoverProgress = Math.max(0.0f, hoverProgress - deltaTime * 4.0f);
+            hoverProgress = Math.max(0.0f, hoverProgress - deltaTime * 6.0f);
         }
-
-        int currentColor = interpolateColor(PRIMARY_COLOR, PRIMARY_HOVER, hoverProgress);
 
         int x = getX();
         int y = getY();
@@ -48,23 +48,35 @@ public class CustomButton extends ButtonWidget {
         if (active) {
             ctx.fill(x + 1, y + h, x + w, y + h + 2, SHADOW_COLOR);
 
-            ctx.fill(x, y, x + w, y + h, currentColor);
+            ctx.fill(x, y, x + w, y + h, PRIMARY_COLOR);
 
-            ctx.fill(x, y, x + w, y + 1, BORDER_COLOR);
-            ctx.fill(x, y + h - 1, x + w, y + h, BORDER_COLOR);
-            ctx.fill(x, y, x + 1, y + h, BORDER_COLOR);
-            ctx.fill(x + w - 1, y, x + w, y + h, BORDER_COLOR);
+            int topHighlight = addAlpha(0xFFFFFFFF, 0.3f);
+            ctx.fill(x + 1, y + 1, x + w - 1, y + 2, topHighlight);
 
-            int topGradient = addAlpha(0xFFFFFFFF, 0.15f);
-            ctx.fill(x + 1, y + 1, x + w - 1, y + h / 2, topGradient);
+            int bottomShadow = addAlpha(0xFF000000, 0.15f);
+            ctx.fill(x + 1, y + h - 2, x + w - 1, y + h - 1, bottomShadow);
+
+            int borderColor = interpolateColor(BORDER_NORMAL, BORDER_HOVER, hoverProgress);
+
+            ctx.fill(x, y, x + w, y + 1, borderColor);
+            ctx.fill(x, y + h - 1, x + w, y + h, borderColor);
+            ctx.fill(x, y, x + 1, y + h, borderColor);
+            ctx.fill(x + w - 1, y, x + w, y + h, borderColor);
         } else {
-            ctx.fill(x, y, x + w, y + h, 0xFF666666);
+            ctx.fill(x, y, x + w, y + h, DISABLED_COLOR);
+
+            int borderColor = BORDER_NORMAL;
+            ctx.fill(x, y, x + w, y + 1, borderColor);
+            ctx.fill(x, y + h - 1, x + w, y + h, borderColor);
+            ctx.fill(x, y, x + 1, y + h, borderColor);
+            ctx.fill(x + w - 1, y, x + w, y + h, borderColor);
         }
 
         int textX = x + w / 2;
         int textY = y + (h - 8) / 2;
-        ctx.drawCenteredTextWithShadow(this.getTextRenderer(), this.getMessage(), textX, textY,
-                active ? TEXT_COLOR : 0xFFA0A0A0);
+        int textWidth = this.getTextRenderer().getWidth(this.getMessage());
+        ctx.drawText(this.getTextRenderer(), this.getMessage(), textX - textWidth / 2, textY,
+                active ? TEXT_COLOR : TEXT_DISABLED, false);
     }
 
     private int interpolateColor(int color1, int color2, float t) {

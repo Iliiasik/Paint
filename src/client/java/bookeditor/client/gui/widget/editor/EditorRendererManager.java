@@ -2,9 +2,11 @@ package bookeditor.client.gui.widget.editor;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 public class EditorRendererManager {
     private final EditorState state;
+    private static final Identifier BACKGROUND_TEXTURE = Identifier.of("minecraft", "textures/block/dark_oak_planks.png");
 
     public EditorRendererManager(EditorState state, EditorToolManager toolManager, EditorStyleManager styleManager) {
         this.state = state;
@@ -40,13 +42,34 @@ public class EditorRendererManager {
             int centerX = widget.getX() + widget.getWidth() / 2;
             int textY = widget.getY() + 6;
             int textW = state.textRenderer.getWidth(msg);
-            ctx.drawText(state.textRenderer, Text.literal(msg), centerX - textW / 2, textY, 0xFFE0E0E0, false);
+            ctx.drawText(state.textRenderer, Text.literal(msg), centerX - textW / 2, textY, 0xFF000000, false);
         }
     }
     private void renderFrame(DrawContext ctx, EditorWidget widget) {
-        int frame = widget.isHovered() ? 0xFFAAAAAA : 0xFFBEBEBE;
-        ctx.fill(widget.getX() - 1, widget.getY() - 1, widget.getX() + widget.getWidth() + 1, widget.getY() + widget.getHeight() + 1, frame);
-        ctx.fill(widget.getX(), widget.getY(), widget.getX() + widget.getWidth(), widget.getY() + widget.getHeight(), 0xFFEFEFEF);
+        int frame = 0xFF8B8B8B;
+        int x = widget.getX();
+        int y = widget.getY();
+        int w = widget.getWidth();
+        int h = widget.getHeight();
+
+        ctx.fill(x - 1, y - 1, x + w + 1, y + h + 1, frame);
+
+        int textureSize = 16;
+        int tilesX = (w + textureSize - 1) / textureSize;
+        int tilesY = (h + textureSize - 1) / textureSize;
+
+        for (int tileY = 0; tileY <= tilesY; tileY++) {
+            for (int tileX = 0; tileX <= tilesX; tileX++) {
+                int drawX = x + tileX * textureSize;
+                int drawY = y + tileY * textureSize;
+                int drawW = Math.min(textureSize, x + w - drawX);
+                int drawH = Math.min(textureSize, y + h - drawY);
+
+                if (drawW > 0 && drawH > 0) {
+                    ctx.drawTexture(BACKGROUND_TEXTURE, drawX, drawY, 0, 0, drawW, drawH, textureSize, textureSize);
+                }
+            }
+        }
     }
     private void renderCanvas(DrawContext ctx) {
         int cLeft = state.canvasScreenLeft();

@@ -50,9 +50,9 @@ public class ColorPickerDropdown extends ClickableWidget {
         boolean isHovering = this.isHovered();
 
         if (isHovering && hoverProgress < 1.0f) {
-            hoverProgress = Math.min(1.0f, hoverProgress + deltaTime * 5.0f);
+            hoverProgress = Math.min(1.0f, hoverProgress + deltaTime * 6.0f);
         } else if (!isHovering && hoverProgress > 0.0f) {
-            hoverProgress = Math.max(0.0f, hoverProgress - deltaTime * 5.0f);
+            hoverProgress = Math.max(0.0f, hoverProgress - deltaTime * 6.0f);
         }
 
         int x = getX();
@@ -62,18 +62,31 @@ public class ColorPickerDropdown extends ClickableWidget {
 
         ctx.fill(x + 1, y + h, x + w - 1, y + h + 1, 0x33000000);
 
-        ctx.fill(x + 2, y + 2, x + w - 2, y + h - 2, argb);
+        ctx.fill(x + 1, y + 1, x + w - 1, y + h - 1, argb);
 
-        int borderBrightness = (int) (100 + 55 * hoverProgress);
-        int borderColor = 0xFF000000 | (borderBrightness << 16) | (borderBrightness << 8) | borderBrightness;
+        int normalBorder = 0xFF8B8B8B;
+        int hoverBorder = 0xFFE8B84C;
+        int a1 = (normalBorder >> 24) & 0xFF;
+        int r1 = (normalBorder >> 16) & 0xFF;
+        int g1 = (normalBorder >> 8) & 0xFF;
+        int b1 = normalBorder & 0xFF;
+        int a2 = (hoverBorder >> 24) & 0xFF;
+        int r2 = (hoverBorder >> 16) & 0xFF;
+        int g2 = (hoverBorder >> 8) & 0xFF;
+        int b2 = hoverBorder & 0xFF;
+        int a = (int) (a1 + (a2 - a1) * hoverProgress);
+        int r = (int) (r1 + (r2 - r1) * hoverProgress);
+        int g = (int) (g1 + (g2 - g1) * hoverProgress);
+        int b = (int) (b1 + (b2 - b1) * hoverProgress);
+        int borderColor = (a << 24) | (r << 16) | (g << 8) | b;
 
-        ctx.fill(x, y, x + w, y + 2, borderColor);
-        ctx.fill(x, y + h - 2, x + w, y + h, borderColor);
-        ctx.fill(x, y, x + 2, y + h, borderColor);
-        ctx.fill(x + w - 2, y, x + w, y + h, borderColor);
+        ctx.fill(x, y, x + w, y + 1, borderColor);
+        ctx.fill(x, y + h - 1, x + w, y + h, borderColor);
+        ctx.fill(x, y, x + 1, y + h, borderColor);
+        ctx.fill(x + w - 1, y, x + w, y + h, borderColor);
 
         int topGradient = addAlpha(0xFFFFFFFF, 0.2f * (1 + hoverProgress * 0.3f));
-        ctx.fill(x + 2, y + 2, x + w - 2, y + h / 2, topGradient);
+        ctx.fill(x + 1, y + 1, x + w - 1, y + h / 2, topGradient);
     }
 
     public void renderDropdown(DrawContext ctx, int mouseX, int mouseY) {
@@ -89,8 +102,8 @@ public class ColorPickerDropdown extends ClickableWidget {
         ctx.getMatrices().push();
         ctx.getMatrices().translate(0, 0, 300);
 
-        ctx.fill(dropX - 1, dropY - 1, dropX + dropWidth + 1, dropY + dropHeight + 1, 0xFF1E1E1E);
-        ctx.fill(dropX, dropY, dropX + dropWidth, dropY + dropHeight, 0xFF2D2D30);
+        ctx.fill(dropX - 1, dropY - 1, dropX + dropWidth + 1, dropY + dropHeight + 1, 0xFF373737);
+        ctx.fill(dropX, dropY, dropX + dropWidth, dropY + dropHeight, 0xFFF0E8DC);
 
         for (int i = 0; i < PRESET_COLORS.length; i++) {
             int col = i % COLS;
@@ -101,10 +114,10 @@ public class ColorPickerDropdown extends ClickableWidget {
             ctx.fill(cx, cy, cx + COLOR_SIZE, cy + COLOR_SIZE, PRESET_COLORS[i]);
 
             if (mouseX >= cx && mouseX < cx + COLOR_SIZE && mouseY >= cy && mouseY < cy + COLOR_SIZE) {
-                ctx.fill(cx, cy, cx + COLOR_SIZE, cy + 1, 0xFFFFFFFF);
-                ctx.fill(cx, cy + COLOR_SIZE - 1, cx + COLOR_SIZE, cy + COLOR_SIZE, 0xFFFFFFFF);
-                ctx.fill(cx, cy, cx + 1, cy + COLOR_SIZE, 0xFFFFFFFF);
-                ctx.fill(cx + COLOR_SIZE - 1, cy, cx + COLOR_SIZE, cy + COLOR_SIZE, 0xFFFFFFFF);
+                ctx.fill(cx, cy, cx + COLOR_SIZE, cy + 1, 0xFFE8B84C);
+                ctx.fill(cx, cy + COLOR_SIZE - 1, cx + COLOR_SIZE, cy + COLOR_SIZE, 0xFFE8B84C);
+                ctx.fill(cx, cy, cx + 1, cy + COLOR_SIZE, 0xFFE8B84C);
+                ctx.fill(cx + COLOR_SIZE - 1, cy, cx + COLOR_SIZE, cy + COLOR_SIZE, 0xFFE8B84C);
             }
         }
 

@@ -241,7 +241,7 @@ public class TextBoxInteraction {
     }
 
     private void drawHandle(DrawContext ctx, int x, int y) {
-        ctx.fill(x, y, x + 4, y + 4, 0xFFFFFFFF);
-        ctx.fill(x + 1, y + 1, x + 3, y + 3, 0xFF0066CC);
+        ctx.fill(x, y, x + 4, y + 4, 0xFF373737);
+        ctx.fill(x + 1, y + 1, x + 3, y + 3, 0xFFF0E8DC);
     }
 }
