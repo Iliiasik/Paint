@@ -34,7 +34,7 @@ public final class AuthorBadgeRenderer {
             int titleW = textRenderer.getWidth(data.title);
             int titleX = centerX - titleW / 2;
             int titleY = Math.max(0, toolbarY - textRenderer.fontHeight - 4);
-            ctx.drawTextWithShadow(textRenderer, Text.literal(data.title), titleX, titleY, 0xFFFFFFFF);
+            ctx.drawText(textRenderer, Text.literal(data.title), titleX, titleY, 0xFF000000, false);
         }
 
         if (data.authorName != null && !data.authorName.isEmpty()) {
@@ -42,15 +42,14 @@ public final class AuthorBadgeRenderer {
             int badgeY = y + (headSize - (padY * 2 + textRenderer.fontHeight)) / 2;
             int badgeH = padY * 2 + textRenderer.fontHeight;
 
-            int badgeBg = 0x553388FF;
-            int badgeBorder = 0x883388FF;
+            int badgeBg = 0xCC8B8B8B;
+            int badgeBorder = 0xFF373737;
             ctx.fill(badgeX, badgeY, badgeX + badgeW, badgeY + badgeH, badgeBg);
             ctx.fill(badgeX - 1, badgeY - 1, badgeX + badgeW + 1, badgeY, badgeBorder);
             ctx.fill(badgeX - 1, badgeY + badgeH, badgeX + badgeW + 1, badgeY + badgeH + 1, badgeBorder);
             ctx.fill(badgeX - 1, badgeY, badgeX, badgeY + badgeH, badgeBorder);
             ctx.fill(badgeX + badgeW, badgeY, badgeX + badgeW + 1, badgeY + badgeH, badgeBorder);
-
-            ctx.drawTextWithShadow(textRenderer, Text.literal(data.authorName), badgeX + padX, badgeY + padY, 0xFFFFFFFF);
+            ctx.drawText(textRenderer, Text.literal(data.authorName), badgeX + padX, badgeY + padY, 0xFF000000, false);
         }
 
         if (data.authorUuid != null || (data.authorName != null && !data.authorName.isEmpty())) {

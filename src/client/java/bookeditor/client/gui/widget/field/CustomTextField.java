@@ -6,10 +6,11 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.text.Text;
 
 public class CustomTextField extends TextFieldWidget {
-    private static final int BACKGROUND = 0xFF2D2D30;
-    private static final int BORDER = 0xFF3E3E42;
-    private static final int BORDER_FOCUSED = 0xFF007ACC;
-    private static final int TEXT_COLOR = 0xFFE0E0E0;
+    private static final int BACKGROUND = 0xFFF0E8DC;
+    private static final int BORDER = 0xFF8B8B8B;
+    private static final int BORDER_FOCUSED = 0xFF373737;
+    private static final int TEXT_COLOR = 0xFF000000;
+    private static final int SUGGESTION_COLOR = 0xFF808080;
     private static final int PADDING = 6;
 
     public CustomTextField(TextRenderer textRenderer, int x, int y, int width, int height, Text text) {
@@ -29,24 +30,37 @@ public class CustomTextField extends TextFieldWidget {
         context.fill(x, y, x + w, y + h, BACKGROUND);
 
         int borderColor = this.isFocused() ? BORDER_FOCUSED : BORDER;
-        int borderWidth = this.isFocused() ? 2 : 1;
+        int borderWidth = 1;
 
         context.fill(x, y, x + w, y + borderWidth, borderColor);
         context.fill(x, y + h - borderWidth, x + w, y + h, borderColor);
         context.fill(x, y, x + borderWidth, y + h, borderColor);
         context.fill(x + w - borderWidth, y, x + w, y + h, borderColor);
 
-        int originalX = super.getX();
-        int originalY = super.getY();
+        int textY = y + (h - 8) / 2;
+        int innerLeft = x + PADDING;
+        int innerRight = x + w - PADDING;
 
-        super.setX(x + PADDING);
-        super.setY(y + (h - 8) / 2);
+        context.enableScissor(innerLeft, y + 2, innerRight, y + h - 2);
 
-        context.enableScissor(x + PADDING, y + 2, x + w - PADDING, y + h - 2);
-        super.renderButton(context, mouseX, mouseY, delta);
+        String text = this.getText();
+        TextRenderer tr = net.minecraft.client.MinecraftClient.getInstance().textRenderer;
+
+        if (text.isEmpty() && !this.isFocused()) {
+            Text suggestion = this.getMessage();
+            if (suggestion != null) {
+                context.drawText(tr, suggestion, innerLeft, textY, SUGGESTION_COLOR, false);
+            }
+        } else {
+            context.drawText(tr, text, innerLeft, textY, TEXT_COLOR, false);
+
+            if (this.isFocused() && (System.currentTimeMillis() / 500) % 2 == 0) {
+                int cursorPos = this.getCursor();
+                int cursorX = innerLeft + tr.getWidth(text.substring(0, Math.min(cursorPos, text.length())));
+                context.fill(cursorX, textY - 1, cursorX + 1, textY + 9, TEXT_COLOR);
+            }
+        }
+
         context.disableScissor();
-
-        super.setX(originalX);
-        super.setY(originalY);
     }
 }

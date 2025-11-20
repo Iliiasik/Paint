@@ -40,13 +40,13 @@ public class EditorRendererManager {
             int centerX = widget.getX() + widget.getWidth() / 2;
             int textY = widget.getY() + 6;
             int textW = state.textRenderer.getWidth(msg);
-            ctx.drawText(state.textRenderer, Text.literal(msg), centerX - textW / 2, textY, 0xFFE0E0E0, false);
+            ctx.drawText(state.textRenderer, Text.literal(msg), centerX - textW / 2, textY, 0xFF000000, false);
         }
     }
     private void renderFrame(DrawContext ctx, EditorWidget widget) {
-        int frame = widget.isHovered() ? 0xFFAAAAAA : 0xFFBEBEBE;
+        int frame = 0xFF8B8B8B;
         ctx.fill(widget.getX() - 1, widget.getY() - 1, widget.getX() + widget.getWidth() + 1, widget.getY() + widget.getHeight() + 1, frame);
-        ctx.fill(widget.getX(), widget.getY(), widget.getX() + widget.getWidth(), widget.getY() + widget.getHeight(), 0xFFEFEFEF);
+        ctx.fill(widget.getX(), widget.getY(), widget.getX() + widget.getWidth(), widget.getY() + widget.getHeight(), 0xFFDED0BA);
     }
     private void renderCanvas(DrawContext ctx) {
         int cLeft = state.canvasScreenLeft();

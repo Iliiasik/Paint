@@ -83,29 +83,27 @@ public class ImageInsertScreen extends Screen {
         int panelX = this.width / 2 - panelW / 2;
         int panelY = this.height / 2 - panelH / 2;
 
-        ctx.fill(panelX - 2, panelY - 2, panelX + panelW + 2, panelY + panelH + 2, 0xFF1E1E1E);
-        ctx.fill(panelX, panelY, panelX + panelW, panelY + panelH, 0xFF2D2D30);
-        ctx.fill(panelX, panelY, panelX + panelW, panelY + 2, 0xFF007ACC);
+        ctx.fill(panelX - 2, panelY - 2, panelX + panelW + 2, panelY + panelH + 2, 0xFF545454);
+        ctx.fill(panelX, panelY, panelX + panelW, panelY + panelH, 0xFFDED0BA);
+        ctx.fill(panelX, panelY, panelX + panelW, panelY + 2, 0xFF545454);
 
-        int titleY = panelY - 10;
-        ctx.drawCenteredTextWithShadow(this.textRenderer, this.getTitle(), this.width / 2, titleY, 0xFFFFFFFF);
 
         int urlLabelY = panelY + 6;
         Text urlLabel = Text.translatable("screen.bookeditor.url_label");
         int urlLabelWidth = this.textRenderer.getWidth(urlLabel);
-        ctx.drawText(this.textRenderer, urlLabel, this.width / 2 - urlLabelWidth / 2, urlLabelY, 0xFFE0E0E0, false);
+        ctx.drawText(this.textRenderer, urlLabel, this.width / 2 - urlLabelWidth / 2, urlLabelY, 0xFF1A0D00, false);
 
         int sizeLabelY = panelY + 50;
 
         Text widthLabel = Text.translatable("screen.bookeditor.width_label");
         int widthLabelWidth = this.textRenderer.getWidth(widthLabel);
         int widthLabelX = panelX + 14 + ((panelW - 36) / 2 - widthLabelWidth) / 2;
-        ctx.drawText(this.textRenderer, widthLabel, widthLabelX, sizeLabelY, 0xFFE0E0E0, false);
+        ctx.drawText(this.textRenderer, widthLabel, widthLabelX, sizeLabelY, 0xFF000000, false);
 
         Text heightLabel = Text.translatable("screen.bookeditor.height_label");
         int heightLabelWidth = this.textRenderer.getWidth(heightLabel);
         int heightLabelX = panelX + 22 + (panelW - 36) / 2 + ((panelW - 36) / 2 - heightLabelWidth) / 2;
-        ctx.drawText(this.textRenderer, heightLabel, heightLabelX, sizeLabelY, 0xFFE0E0E0, false);
+        ctx.drawText(this.textRenderer, heightLabel, heightLabelX, sizeLabelY, 0xFF000000, false);
 
         super.render(ctx, mouseX, mouseY, delta);
     }

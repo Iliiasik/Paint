@@ -36,7 +36,7 @@ public class ImageRenderer {
                     if (texReady) {
                         ctx.drawTexture(tex, imgX, imgY, 0, 0, sw, sh, sw, sh);
                     } else {
-                        ctx.fill(imgX, imgY, imgX + sw, imgY + sh, 0xFFCCCCCC);
+                        ctx.fill(imgX, imgY, imgX + sw, imgY + sh, 0xFFF6EEE3);
                     }
                 }
                 imageInteraction.addImageRect(imgX, imgY, sw, sh, i);
