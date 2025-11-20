@@ -10,9 +10,11 @@ public class CustomButton extends ButtonWidget {
     private long lastFrameTime = System.currentTimeMillis();
 
     private static final int PRIMARY_COLOR = 0xFFF0E8DC;
+    private static final int DISABLED_COLOR = 0xFFD4C8B8;
     private static final int BORDER_NORMAL = 0xFF8B8B8B;
     private static final int BORDER_HOVER = 0xFFE8B84C;
     private static final int TEXT_COLOR = 0xFF000000;
+    private static final int TEXT_DISABLED = 0xFF6B5F53;
     private static final int SHADOW_COLOR = 0x441E1E1E;
 
     public CustomButton(int x, int y, int width, int height, Text message, PressAction onPress) {
@@ -61,14 +63,20 @@ public class CustomButton extends ButtonWidget {
             ctx.fill(x, y, x + 1, y + h, borderColor);
             ctx.fill(x + w - 1, y, x + w, y + h, borderColor);
         } else {
-            ctx.fill(x, y, x + w, y + h, 0xFFA0A0A0);
+            ctx.fill(x, y, x + w, y + h, DISABLED_COLOR);
+
+            int borderColor = BORDER_NORMAL;
+            ctx.fill(x, y, x + w, y + 1, borderColor);
+            ctx.fill(x, y + h - 1, x + w, y + h, borderColor);
+            ctx.fill(x, y, x + 1, y + h, borderColor);
+            ctx.fill(x + w - 1, y, x + w, y + h, borderColor);
         }
 
         int textX = x + w / 2;
         int textY = y + (h - 8) / 2;
         int textWidth = this.getTextRenderer().getWidth(this.getMessage());
         ctx.drawText(this.getTextRenderer(), this.getMessage(), textX - textWidth / 2, textY,
-                active ? TEXT_COLOR : 0xFFA0A0A0, false);
+                active ? TEXT_COLOR : TEXT_DISABLED, false);
     }
 
     private int interpolateColor(int color1, int color2, float t) {

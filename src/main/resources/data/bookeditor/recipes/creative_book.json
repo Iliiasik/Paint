@@ -1,9 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    { "item": "minecraft:paper" },
-    { "item": "minecraft:feather" },
-    { "item": "minecraft:gold_nugget" }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PF",
+    "DG"
   ],
+  "key": {
+    "P": { "item": "minecraft:paper" },
+    "F": { "item": "minecraft:feather" },
+    "D": { "tag": "minecraft:planks" },
+    "G": { "item": "minecraft:gold_nugget" }
+  },
   "result": { "item": "bookeditor:creative_book" }
 }

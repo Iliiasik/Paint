@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "bookeditor",
   "version": "${version}",
-  "name": "BookEditor",
+  "name": "Paint",
   "description": "Creative Book with WYSIWYG-like editor, images, TOC and localization.",
   "authors": ["Iliiasik"],
   "contact": {},
