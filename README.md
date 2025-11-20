@@ -5,8 +5,8 @@
 <a href="https://www.curseforge.com/minecraft/mc-mods/book-editor">
   <img src="https://cf.way2muchnoise.eu/full_1368235_downloads.svg" alt="CurseForge Downloads" />
 </a><br>
-  <a href="https://www.codefactor.io/repository/github/iliiasik/book-editor/overview/main">
-    <img src="https://www.codefactor.io/repository/github/iliiasik/book-editor/badge/main" alt="CodeFactor"/>
+  <a href="https://www.codefactor.io/repository/github/iliiasik/paint/overview/main">
+    <img src="https://www.codefactor.io/repository/github/iliiasik/paint/badge/main" alt="CodeFactor"/>
   </a>
 </p>
 
