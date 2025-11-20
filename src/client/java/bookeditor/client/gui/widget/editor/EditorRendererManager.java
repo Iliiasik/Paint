@@ -6,7 +6,7 @@ import net.minecraft.util.Identifier;
 
 public class EditorRendererManager {
     private final EditorState state;
-    private static final Identifier BACKGROUND_TEXTURE = Identifier.of("minecraft", "textures/block/deepslate.png");
+    private static final Identifier BACKGROUND_TEXTURE = Identifier.of("minecraft", "textures/block/dark_oak_planks.png");
 
     public EditorRendererManager(EditorState state, EditorToolManager toolManager, EditorStyleManager styleManager) {
         this.state = state;

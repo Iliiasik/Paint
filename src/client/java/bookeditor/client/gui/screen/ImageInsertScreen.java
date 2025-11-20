@@ -84,7 +84,7 @@ public class ImageInsertScreen extends Screen {
         int panelY = this.height / 2 - panelH / 2;
 
         ctx.fill(panelX - 2, panelY - 2, panelX + panelW + 2, panelY + panelH + 2, 0xFF545454);
-        ctx.fill(panelX, panelY, panelX + panelW, panelY + panelH, 0xFFF5EFE5);
+        ctx.fill(panelX, panelY, panelX + panelW, panelY + panelH, 0xFFFAF4EB);
         ctx.fill(panelX, panelY, panelX + panelW, panelY + 2, 0xFF545454);
 
 
