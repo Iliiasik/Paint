@@ -5,8 +5,8 @@
 <a href="https://www.curseforge.com/minecraft/mc-mods/paint-editor">
   <img src="https://cf.way2muchnoise.eu/full_1368235_downloads.svg" alt="CurseForge Downloads" />
 </a><br>
-  <a href="https://www.codefactor.io/repository/github/iliiasik/paint/overview/main">
-    <img src="https://www.codefactor.io/repository/github/iliiasik/paint/badge/main" alt="CodeFactor"/>
+  <a href="https://www.codefactor.io/repository/github/iliiasik/paint/overview/1.20.1">
+    <img src="https://www.codefactor.io/repository/github/iliiasik/paint/badge/1.20.1" alt="CodeFactor"/>
   </a>
 </p>
 
