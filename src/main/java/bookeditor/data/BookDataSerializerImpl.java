@@ -3,7 +3,6 @@ package bookeditor.data;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
-import net.minecraft.text.Text;
 
 import java.util.UUID;
 import java.util.logging.Level;
@@ -14,6 +13,7 @@ public class BookDataSerializerImpl implements IBookDataSerializer {
     private static final int MAX_TITLE_LEN = 512;
     private static final int MAX_AUTHOR_LEN = 256;
     private static final int MAX_PAGES = 256;
+    private static final int MAX_PLANK_TYPE_LEN = 128;
     private static final Logger LOGGER = Logger.getLogger(BookDataSerializerImpl.class.getName());
 
     @Override
@@ -21,15 +21,13 @@ public class BookDataSerializerImpl implements IBookDataSerializer {
         NbtCompound root = stack.getOrCreateNbt();
         if (!root.contains(BookData.ROOT, NbtElement.COMPOUND_TYPE)) {
             BookData data = new BookData();
-            data.title = Text.translatable("bookeditor.default_title").getString();
+            data.title = "";
             data.authorName = player.getGameProfile().getName();
             data.authorUuid = player.getUuid();
             data.signed = false;
+            data.plankType = "minecraft:dark_oak_planks";
             BookData.Page p = new BookData.Page();
             p.bgArgb = 0xFFF8F8F8;
-            BookData.TextBoxNode box = new BookData.TextBoxNode(20, 20, 400, 100);
-            box.setText(Text.translatable("bookeditor.default_page").getString(), false, false, false, 0xFF202020, 1.0f);
-            p.nodes.add(box);
             data.pages.add(p);
             writeTo(stack, data);
         }
@@ -54,6 +52,12 @@ public class BookDataSerializerImpl implements IBookDataSerializer {
                 }
             }
             d.signed = cb.getBoolean(BookData.SIGNED);
+
+            if (cb.contains(BookData.PLANK_TYPE, NbtElement.STRING_TYPE)) {
+                d.plankType = BookDataUtils.safeString(cb.getString(BookData.PLANK_TYPE), MAX_PLANK_TYPE_LEN);
+            } else {
+                d.plankType = "minecraft:dark_oak_planks";
+            }
 
             NbtList pages = cb.getList(BookData.PAGES, NbtElement.COMPOUND_TYPE);
             int pageCount = Math.min(pages.size(), MAX_PAGES);
@@ -88,6 +92,9 @@ public class BookDataSerializerImpl implements IBookDataSerializer {
             cb.putString(BookData.AUTHOR_UUID, d.authorUuid.toString());
         }
         cb.putBoolean(BookData.SIGNED, d.signed);
+
+        cb.putString(BookData.PLANK_TYPE, BookDataUtils.safeString(
+                d.plankType != null ? d.plankType : "minecraft:dark_oak_planks", MAX_PLANK_TYPE_LEN));
 
         NbtList pages = new NbtList();
         int added = 0;

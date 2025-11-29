@@ -98,6 +98,7 @@ public class BookScreen extends Screen implements WidgetHost {
                 textRenderer, MARGIN, editorY, editorWidth, editorHeight,
                 !data.signed, ImageCache::requestTexture, this::onDirty
         );
+        editor.setPlankType(data.plankType);
         addDrawableChild(editor);
 
         toolbar = new AdaptiveToolbar(

@@ -17,11 +17,13 @@ public class BookData {
     public static final String AUTHOR_NAME = "authorName";
     public static final String AUTHOR_UUID = "authorUuid";
     public static final String SIGNED = "signed";
+    public static final String PLANK_TYPE = "plankType";
 
     public String title = "";
     public String authorName = "";
     public UUID authorUuid = Util.NIL_UUID;
     public boolean signed = false;
+    public String plankType = "minecraft:oak_planks";
     public final List<Page> pages = new ArrayList<>();
 
     public static final int ALIGN_LEFT = 0;

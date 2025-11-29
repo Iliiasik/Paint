@@ -94,6 +94,10 @@ public class EditorWidget extends ClickableWidget {
         styleManager.setTextBoxBgColor(argb);
     }
 
+    public void setPlankType(String plankType) {
+        state.setPlankType(plankType);
+    }
+
     public void setDrawingToolColor(int argb) {
         toolManager.setDrawingToolColor(argb);
     }
