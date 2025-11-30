@@ -151,18 +151,32 @@ public class ColorPickerInputHandler {
             return true;
         }
 
+        if (keyCode == GLFW.GLFW_KEY_C && (modifiers & GLFW.GLFW_MOD_CONTROL) != 0) {
+            if (!state.hexInput.isEmpty()) {
+                MinecraftClient.getInstance().keyboard.setClipboard("#" + state.hexInput);
+            }
+            return true;
+        }
+
         if (keyCode == GLFW.GLFW_KEY_V && (modifiers & GLFW.GLFW_MOD_CONTROL) != 0) {
             String clipboard = MinecraftClient.getInstance().keyboard.getClipboard();
             if (clipboard != null) {
                 clipboard = clipboard.replace("#", "").toUpperCase();
                 clipboard = clipboard.replaceAll("[^0-9A-F]", "");
-                int available = 6 - state.hexInput.length();
-                if (available > 0 && !clipboard.isEmpty()) {
-                    String toInsert = clipboard.substring(0, Math.min(clipboard.length(), available));
-                    state.hexInput = state.hexInput.substring(0, state.cursorPos) + toInsert + state.hexInput.substring(state.cursorPos);
-                    state.cursorPos += toInsert.length();
+                if (!clipboard.isEmpty()) {
+                    String toInsert = clipboard.substring(0, Math.min(clipboard.length(), 6));
+                    state.hexInput = toInsert;
+                    state.cursorPos = toInsert.length();
+                    if (toInsert.length() == 6 || toInsert.length() == 3) {
+                        tryApplyHex();
+                    }
                 }
             }
+            return true;
+        }
+
+        if (keyCode == GLFW.GLFW_KEY_A && (modifiers & GLFW.GLFW_MOD_CONTROL) != 0) {
+            state.cursorPos = state.hexInput.length();
             return true;
         }
 
