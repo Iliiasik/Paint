@@ -47,7 +47,7 @@ public class ColorPickerDropdown extends ClickableWidget {
         state.updateCursorBlink();
         int dropX = getX();
         int dropY = getY() + height + 2;
-        renderer.renderDropdown(ctx, dropX, dropY, state, mouseX, mouseY);
+        renderer.renderDropdown(ctx, dropX, dropY, state);
     }
 
     @Override
@@ -69,9 +69,9 @@ public class ColorPickerDropdown extends ClickableWidget {
 
         int dropX = getX();
         int dropY = getY() + height + 2;
+
         return inputHandler.handleMouseClick(mouseX, mouseY, dropX, dropY);
     }
-
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if (!state.expanded) return false;

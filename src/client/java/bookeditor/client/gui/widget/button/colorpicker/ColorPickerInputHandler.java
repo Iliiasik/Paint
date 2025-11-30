@@ -29,11 +29,10 @@ public class ColorPickerInputHandler {
         }
 
         int hueX = paletteX + ColorPickerConstants.PALETTE_WIDTH + ColorPickerConstants.GAP;
-        int hueY = paletteY;
         if (mouseX >= hueX && mouseX < hueX + ColorPickerConstants.HUE_BAR_WIDTH &&
-                mouseY >= hueY && mouseY < hueY + ColorPickerConstants.HUE_BAR_HEIGHT) {
+                mouseY >= paletteY && mouseY < paletteY + ColorPickerConstants.HUE_BAR_HEIGHT) {
             state.draggingHue = true;
-            updateFromHueBar(mouseY, hueY);
+            updateFromHueBar(mouseY, paletteY);
             return true;
         }
 
@@ -49,19 +48,6 @@ public class ColorPickerInputHandler {
             state.hexFieldFocused = false;
         }
 
-        int presetsY = hexY + ColorPickerConstants.HEX_FIELD_HEIGHT + ColorPickerConstants.GAP;
-        for (int i = 0; i < ColorPickerConstants.PRESET_COLORS.length; i++) {
-            int col = i % ColorPickerConstants.COLS;
-            int row = i / ColorPickerConstants.COLS;
-            int cx = paletteX + col * (ColorPickerConstants.COLOR_SIZE + ColorPickerConstants.GAP);
-            int cy = presetsY + row * (ColorPickerConstants.COLOR_SIZE + ColorPickerConstants.GAP);
-
-            if (mouseX >= cx && mouseX < cx + ColorPickerConstants.COLOR_SIZE && mouseY >= cy && mouseY < cy + ColorPickerConstants.COLOR_SIZE) {
-                state.updateFromArgb(ColorPickerConstants.PRESET_COLORS[i]);
-                onColorChange.accept(state.argb);
-                return true;
-            }
-        }
 
         int totalWidth = ColorPickerConstants.calculateTotalWidth();
         int totalHeight = ColorPickerConstants.calculateTotalHeight();
@@ -88,8 +74,7 @@ public class ColorPickerInputHandler {
         }
 
         if (state.draggingHue) {
-            int hueY = paletteY;
-            updateFromHueBar(mouseY, hueY);
+            updateFromHueBar(mouseY, paletteY);
             return true;
         }
 
@@ -112,8 +97,7 @@ public class ColorPickerInputHandler {
     }
 
     private void updateFromHueBar(double mouseY, int hueY) {
-        float h = (float) Math.max(0, Math.min(ColorPickerConstants.HUE_BAR_HEIGHT - 1, mouseY - hueY)) / (ColorPickerConstants.HUE_BAR_HEIGHT - 1);
-        state.hue = h;
+        state.hue = (float) Math.max(0, Math.min(ColorPickerConstants.HUE_BAR_HEIGHT - 1, mouseY - hueY)) / (ColorPickerConstants.HUE_BAR_HEIGHT - 1);
         state.updateFromHSB();
         onColorChange.accept(state.argb);
     }
@@ -125,7 +109,6 @@ public class ColorPickerInputHandler {
             if (state.cursorPos > 0 && !state.hexInput.isEmpty()) {
                 state.hexInput = state.hexInput.substring(0, state.cursorPos - 1) + state.hexInput.substring(state.cursorPos);
                 state.cursorPos--;
-                tryApplyHex();
             }
             return true;
         }
@@ -133,7 +116,6 @@ public class ColorPickerInputHandler {
         if (keyCode == GLFW.GLFW_KEY_DELETE) {
             if (state.cursorPos < state.hexInput.length()) {
                 state.hexInput = state.hexInput.substring(0, state.cursorPos) + state.hexInput.substring(state.cursorPos + 1);
-                tryApplyHex();
             }
             return true;
         }
@@ -179,7 +161,6 @@ public class ColorPickerInputHandler {
                     String toInsert = clipboard.substring(0, Math.min(clipboard.length(), available));
                     state.hexInput = state.hexInput.substring(0, state.cursorPos) + toInsert + state.hexInput.substring(state.cursorPos);
                     state.cursorPos += toInsert.length();
-                    tryApplyHex();
                 }
             }
             return true;
@@ -196,7 +177,6 @@ public class ColorPickerInputHandler {
                 char upper = Character.toUpperCase(chr);
                 state.hexInput = state.hexInput.substring(0, state.cursorPos) + upper + state.hexInput.substring(state.cursorPos);
                 state.cursorPos++;
-                tryApplyHex();
             }
             return true;
         }

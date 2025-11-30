@@ -12,7 +12,7 @@ public class ColorPickerRenderer {
         ctx.fill(x + 1, y + 1, x + width - 1, y + height - 1, state.argb);
 
         int borderColor = ColorConverter.interpolateColor(
-                ColorPickerConstants.NORMAL_BORDER,
+                ColorPickerConstants.BORDER_NORMAL,
                 ColorPickerConstants.HOVER_BORDER,
                 state.hoverProgress
         );
@@ -26,7 +26,7 @@ public class ColorPickerRenderer {
         ctx.fill(x + 1, y + 1, x + width - 1, y + height / 2, topGradient);
     }
 
-    public void renderDropdown(DrawContext ctx, int dropX, int dropY, ColorPickerState state, int mouseX, int mouseY) {
+    public void renderDropdown(DrawContext ctx, int dropX, int dropY, ColorPickerState state) {
         int totalWidth = ColorPickerConstants.calculateTotalWidth();
         int totalHeight = ColorPickerConstants.calculateTotalHeight();
 
@@ -42,15 +42,11 @@ public class ColorPickerRenderer {
         renderSatBrightPalette(ctx, paletteX, paletteY, state);
 
         int hueX = paletteX + ColorPickerConstants.PALETTE_WIDTH + ColorPickerConstants.GAP;
-        int hueY = paletteY;
-        renderHueBar(ctx, hueX, hueY, state);
+        renderHueBar(ctx, hueX, paletteY, state);
 
         int hexY = paletteY + ColorPickerConstants.PALETTE_HEIGHT + ColorPickerConstants.GAP;
         renderHexField(ctx, paletteX, hexY, state);
-        renderPreview(ctx, paletteX + 70, hexY, state);
-
-        int presetsY = hexY + ColorPickerConstants.HEX_FIELD_HEIGHT + ColorPickerConstants.GAP;
-        renderPresets(ctx, paletteX, presetsY, mouseX, mouseY);
+        renderPreview(ctx, paletteX + ColorPickerConstants.HEX_FIELD_WIDTH + ColorPickerConstants.GAP, hexY, state);
 
         ctx.getMatrices().pop();
     }
@@ -105,8 +101,8 @@ public class ColorPickerRenderer {
     private void renderHexField(DrawContext ctx, int x, int y, ColorPickerState state) {
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        int borderColor = state.hexFieldFocused ? ColorPickerConstants.HOVER_BORDER : ColorPickerConstants.NORMAL_BORDER;
-        int bgColor = state.hexFieldFocused ? 0xFFFFFFFF : 0xFFE8E8E8;
+        int borderColor = state.hexFieldFocused ? ColorPickerConstants.BORDER_FOCUSED : ColorPickerConstants.BORDER_NORMAL;
+        int bgColor = ColorPickerConstants.INPUT_BG;
 
         ctx.fill(x, y, x + ColorPickerConstants.HEX_FIELD_WIDTH, y + ColorPickerConstants.HEX_FIELD_HEIGHT, borderColor);
         ctx.fill(x + 1, y + 1, x + ColorPickerConstants.HEX_FIELD_WIDTH - 1, y + ColorPickerConstants.HEX_FIELD_HEIGHT - 1, bgColor);
@@ -124,24 +120,6 @@ public class ColorPickerRenderer {
     private void renderPreview(DrawContext ctx, int x, int y, ColorPickerState state) {
         ctx.fill(x, y, x + ColorPickerConstants.PREVIEW_WIDTH, y + ColorPickerConstants.HEX_FIELD_HEIGHT, ColorPickerConstants.DARK_BORDER);
         ctx.fill(x + 1, y + 1, x + ColorPickerConstants.PREVIEW_WIDTH - 1, y + ColorPickerConstants.HEX_FIELD_HEIGHT - 1, state.argb);
-    }
-
-    private void renderPresets(DrawContext ctx, int x, int y, int mouseX, int mouseY) {
-        for (int i = 0; i < ColorPickerConstants.PRESET_COLORS.length; i++) {
-            int col = i % ColorPickerConstants.COLS;
-            int row = i / ColorPickerConstants.COLS;
-            int cx = x + col * (ColorPickerConstants.COLOR_SIZE + ColorPickerConstants.GAP);
-            int cy = y + row * (ColorPickerConstants.COLOR_SIZE + ColorPickerConstants.GAP);
-
-            ctx.fill(cx, cy, cx + ColorPickerConstants.COLOR_SIZE, cy + ColorPickerConstants.COLOR_SIZE, ColorPickerConstants.PRESET_COLORS[i]);
-
-            if (mouseX >= cx && mouseX < cx + ColorPickerConstants.COLOR_SIZE && mouseY >= cy && mouseY < cy + ColorPickerConstants.COLOR_SIZE) {
-                ctx.fill(cx, cy, cx + ColorPickerConstants.COLOR_SIZE, cy + 1, ColorPickerConstants.HOVER_BORDER);
-                ctx.fill(cx, cy + ColorPickerConstants.COLOR_SIZE - 1, cx + ColorPickerConstants.COLOR_SIZE, cy + ColorPickerConstants.COLOR_SIZE, ColorPickerConstants.HOVER_BORDER);
-                ctx.fill(cx, cy, cx + 1, cy + ColorPickerConstants.COLOR_SIZE, ColorPickerConstants.HOVER_BORDER);
-                ctx.fill(cx + ColorPickerConstants.COLOR_SIZE - 1, cy, cx + ColorPickerConstants.COLOR_SIZE, cy + ColorPickerConstants.COLOR_SIZE, ColorPickerConstants.HOVER_BORDER);
-            }
-        }
     }
 }
 
