@@ -298,6 +298,14 @@ public class BookScreen extends Screen implements WidgetHost {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        for (var child : this.children()) {
+            if (child instanceof ColorPickerDropdown dropdown && dropdown.isExpanded()) {
+                if (dropdown.keyPressed(keyCode, scanCode, modifiers)) {
+                    return true;
+                }
+            }
+        }
+
         if (!data.signed && hasControlDown()) {
             if (handleControlShortcuts(keyCode, modifiers)) {
                 return true;
@@ -308,6 +316,19 @@ public class BookScreen extends Screen implements WidgetHost {
             return true;
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean charTyped(char chr, int modifiers) {
+        for (var child : this.children()) {
+            if (child instanceof ColorPickerDropdown dropdown && dropdown.isExpanded()) {
+                if (dropdown.charTyped(chr, modifiers)) {
+                    return true;
+                }
+            }
+        }
+
+        return super.charTyped(chr, modifiers);
     }
 
     private boolean handleControlShortcuts(int keyCode, int modifiers) {
