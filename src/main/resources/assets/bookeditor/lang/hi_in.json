@@ -4,9 +4,8 @@
   "screen.bookeditor.title": "रचनात्मक पुस्तक",
   "screen.bookeditor.book_title": "शीर्षक",
   "screen.bookeditor.image": "चित्र डालें",
-  "screen.bookeditor.image_gif": "GIF डालें",
   "screen.bookeditor.add": "जोड़ें",
-  "screen.bookeditor.url_label": "चित्र URL:",
+  "screen.bookeditor.url_label": "चित्र URL",
   "screen.bookeditor.width_label": "चौड़ाई",
   "screen.bookeditor.height_label": "ऊँचाई",
 

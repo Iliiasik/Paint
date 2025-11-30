@@ -4,9 +4,8 @@
   "screen.bookeditor.title": "Libro Creativo",
   "screen.bookeditor.book_title": "Titolo",
   "screen.bookeditor.image": "Inserisci immagine",
-  "screen.bookeditor.image_gif": "Inserisci GIF",
   "screen.bookeditor.add": "Aggiungi",
-  "screen.bookeditor.url_label": "URL dell'immagine:",
+  "screen.bookeditor.url_label": "URL dell'immagine",
   "screen.bookeditor.width_label": "Larghezza",
   "screen.bookeditor.height_label": "Altezza",
 

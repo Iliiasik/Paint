@@ -105,6 +105,15 @@ public class ColorPickerInputHandler {
     public boolean handleKeyPress(int keyCode, int scanCode, int modifiers) {
         if (!state.hexFieldFocused) return false;
 
+        if (handleTextEditing(keyCode)) return true;
+        if (handleCursorNavigation(keyCode)) return true;
+        if (handleFieldControl(keyCode)) return true;
+        if (handleClipboardOperations(keyCode, modifiers)) return true;
+
+        return false;
+    }
+
+    private boolean handleTextEditing(int keyCode) {
         if (keyCode == GLFW.GLFW_KEY_BACKSPACE) {
             if (state.cursorPos > 0 && !state.hexInput.isEmpty()) {
                 state.hexInput = state.hexInput.substring(0, state.cursorPos - 1) + state.hexInput.substring(state.cursorPos);
@@ -120,6 +129,10 @@ public class ColorPickerInputHandler {
             return true;
         }
 
+        return false;
+    }
+
+    private boolean handleCursorNavigation(int keyCode) {
         if (keyCode == GLFW.GLFW_KEY_LEFT) {
             state.cursorPos = Math.max(0, state.cursorPos - 1);
             return true;
@@ -140,6 +153,10 @@ public class ColorPickerInputHandler {
             return true;
         }
 
+        return false;
+    }
+
+    private boolean handleFieldControl(int keyCode) {
         if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
             state.hexFieldFocused = false;
             tryApplyHex();
@@ -151,36 +168,50 @@ public class ColorPickerInputHandler {
             return true;
         }
 
-        if (keyCode == GLFW.GLFW_KEY_C && (modifiers & GLFW.GLFW_MOD_CONTROL) != 0) {
-            if (!state.hexInput.isEmpty()) {
-                MinecraftClient.getInstance().keyboard.setClipboard("#" + state.hexInput);
-            }
+        return false;
+    }
+
+    private boolean handleClipboardOperations(int keyCode, int modifiers) {
+        boolean isCtrlPressed = (modifiers & GLFW.GLFW_MOD_CONTROL) != 0;
+
+        if (keyCode == GLFW.GLFW_KEY_C && isCtrlPressed) {
+            copyToClipboard();
             return true;
         }
 
-        if (keyCode == GLFW.GLFW_KEY_V && (modifiers & GLFW.GLFW_MOD_CONTROL) != 0) {
-            String clipboard = MinecraftClient.getInstance().keyboard.getClipboard();
-            if (clipboard != null) {
-                clipboard = clipboard.replace("#", "").toUpperCase();
-                clipboard = clipboard.replaceAll("[^0-9A-F]", "");
-                if (!clipboard.isEmpty()) {
-                    String toInsert = clipboard.substring(0, Math.min(clipboard.length(), 6));
-                    state.hexInput = toInsert;
-                    state.cursorPos = toInsert.length();
-                    if (toInsert.length() == 6 || toInsert.length() == 3) {
-                        tryApplyHex();
-                    }
-                }
-            }
+        if (keyCode == GLFW.GLFW_KEY_V && isCtrlPressed) {
+            pasteFromClipboard();
             return true;
         }
 
-        if (keyCode == GLFW.GLFW_KEY_A && (modifiers & GLFW.GLFW_MOD_CONTROL) != 0) {
+        if (keyCode == GLFW.GLFW_KEY_A && isCtrlPressed) {
             state.cursorPos = state.hexInput.length();
             return true;
         }
 
         return false;
+    }
+
+    private void copyToClipboard() {
+        if (!state.hexInput.isEmpty()) {
+            MinecraftClient.getInstance().keyboard.setClipboard("#" + state.hexInput);
+        }
+    }
+
+    private void pasteFromClipboard() {
+        String clipboard = MinecraftClient.getInstance().keyboard.getClipboard();
+        if (clipboard != null) {
+            clipboard = clipboard.replace("#", "").toUpperCase();
+            clipboard = clipboard.replaceAll("[^0-9A-F]", "");
+            if (!clipboard.isEmpty()) {
+                String toInsert = clipboard.substring(0, Math.min(clipboard.length(), 6));
+                state.hexInput = toInsert;
+                state.cursorPos = toInsert.length();
+                if (toInsert.length() == 6 || toInsert.length() == 3) {
+                    tryApplyHex();
+                }
+            }
+        }
     }
 
     public boolean handleCharTyped(char chr, int modifiers) {

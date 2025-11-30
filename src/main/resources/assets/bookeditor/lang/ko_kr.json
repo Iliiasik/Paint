@@ -4,9 +4,8 @@
   "screen.bookeditor.title": "창작 책",
   "screen.bookeditor.book_title": "제목",
   "screen.bookeditor.image": "이미지 삽입",
-  "screen.bookeditor.image_gif": "GIF 삽입",
   "screen.bookeditor.add": "추가",
-  "screen.bookeditor.url_label": "이미지 URL:",
+  "screen.bookeditor.url_label": "이미지 URL",
   "screen.bookeditor.width_label": "너비",
   "screen.bookeditor.height_label": "높이",
 
