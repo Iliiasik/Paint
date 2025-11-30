@@ -42,13 +42,25 @@ public final class AuthorBadgeRenderer {
             int badgeY = y + (headSize - (padY * 2 + textRenderer.fontHeight)) / 2;
             int badgeH = padY * 2 + textRenderer.fontHeight;
 
-            int badgeBg = 0xCC8B8B8B;
-            int badgeBorder = 0xFF373737;
+            int badgeBg = 0xFFF0E8DC;
+            int badgeBorder = 0xFF8B8B8B;
+            int shadowColor = 0x331E1E1E;
+            int topHighlight = 0x4DFFFFFF;
+            int bottomShadow = 0x26000000;
+
+            ctx.fill(badgeX + 1, badgeY + badgeH, badgeX + badgeW - 1, badgeY + badgeH + 1, shadowColor);
+
             ctx.fill(badgeX, badgeY, badgeX + badgeW, badgeY + badgeH, badgeBg);
-            ctx.fill(badgeX - 1, badgeY - 1, badgeX + badgeW + 1, badgeY, badgeBorder);
-            ctx.fill(badgeX - 1, badgeY + badgeH, badgeX + badgeW + 1, badgeY + badgeH + 1, badgeBorder);
-            ctx.fill(badgeX - 1, badgeY, badgeX, badgeY + badgeH, badgeBorder);
-            ctx.fill(badgeX + badgeW, badgeY, badgeX + badgeW + 1, badgeY + badgeH, badgeBorder);
+
+            ctx.fill(badgeX + 1, badgeY + 1, badgeX + badgeW - 1, badgeY + 2, topHighlight);
+
+            ctx.fill(badgeX + 1, badgeY + badgeH - 2, badgeX + badgeW - 1, badgeY + badgeH - 1, bottomShadow);
+
+            ctx.fill(badgeX, badgeY, badgeX + badgeW, badgeY + 1, badgeBorder);
+            ctx.fill(badgeX, badgeY + badgeH - 1, badgeX + badgeW, badgeY + badgeH, badgeBorder);
+            ctx.fill(badgeX, badgeY, badgeX + 1, badgeY + badgeH, badgeBorder);
+            ctx.fill(badgeX + badgeW - 1, badgeY, badgeX + badgeW, badgeY + badgeH, badgeBorder);
+
             ctx.drawText(textRenderer, Text.literal(data.authorName), badgeX + padX, badgeY + padY, 0xFF000000, false);
         }
 

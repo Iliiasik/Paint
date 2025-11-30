@@ -1,7 +1,5 @@
 {
   "item.bookeditor.creative_book": "Libro Creativo",
-  "bookeditor.default_title": "Libro Creativo",
-  "bookeditor.default_page": "Benvenuto! Usa la barra degli strumenti per formattare il testo, inserire/ridimensionare/spostare immagini con posizione assoluta, allineare il testo e disegnare sulla tela. Supporto Annulla/Ripristina.",
 
   "screen.bookeditor.title": "Libro Creativo",
   "screen.bookeditor.book_title": "Titolo",

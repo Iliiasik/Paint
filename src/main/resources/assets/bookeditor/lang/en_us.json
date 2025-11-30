@@ -1,7 +1,5 @@
 {
   "item.bookeditor.creative_book": "Creative Book",
-  "bookeditor.default_title": "Creative Book",
-  "bookeditor.default_page": "Welcome! Use the toolbar to format text, insert/resize/move images with absolute position, align text and draw on the canvas. Undo/Redo supported.",
 
   "screen.bookeditor.title": "Creative Book",
   "screen.bookeditor.book_title": "Title",

@@ -1,7 +1,5 @@
 {
   "item.bookeditor.creative_book": "Libro Creativo",
-  "bookeditor.default_title": "Libro Creativo",
-  "bookeditor.default_page": "¡Bienvenido! Usa la barra de herramientas para formatear texto, insertar/redimensionar/mover imágenes con posición absoluta, alinear el texto y dibujar en el lienzo. Soporte para deshacer/rehacer.",
 
   "screen.bookeditor.title": "Libro Creativo",
   "screen.bookeditor.book_title": "Título",
