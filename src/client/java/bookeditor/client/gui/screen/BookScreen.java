@@ -98,6 +98,7 @@ public class BookScreen extends Screen implements WidgetHost {
                 textRenderer, MARGIN, editorY, editorWidth, editorHeight,
                 !data.signed, ImageCache::requestTexture, this::onDirty
         );
+        editor.setPlankType(data.plankType);
         addDrawableChild(editor);
 
         toolbar = new AdaptiveToolbar(
@@ -285,6 +286,28 @@ public class BookScreen extends Screen implements WidgetHost {
     }
 
     @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+        for (var child : this.children()) {
+            if (child instanceof ColorPickerDropdown dropdown && dropdown.isExpanded()) {
+                if (dropdown.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)) {
+                    return true;
+                }
+            }
+        }
+        return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        for (var child : this.children()) {
+            if (child instanceof ColorPickerDropdown dropdown && dropdown.isExpanded()) {
+                dropdown.mouseReleased(mouseX, mouseY, button);
+            }
+        }
+        return super.mouseReleased(mouseX, mouseY, button);
+    }
+
+    @Override
     public void resize(MinecraftClient client, int width, int height) {
         super.resize(client, width, height);
     }
@@ -297,6 +320,14 @@ public class BookScreen extends Screen implements WidgetHost {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        for (var child : this.children()) {
+            if (child instanceof ColorPickerDropdown dropdown && dropdown.isExpanded()) {
+                if (dropdown.keyPressed(keyCode, scanCode, modifiers)) {
+                    return true;
+                }
+            }
+        }
+
         if (!data.signed && hasControlDown()) {
             if (handleControlShortcuts(keyCode, modifiers)) {
                 return true;
@@ -307,6 +338,19 @@ public class BookScreen extends Screen implements WidgetHost {
             return true;
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean charTyped(char chr, int modifiers) {
+        for (var child : this.children()) {
+            if (child instanceof ColorPickerDropdown dropdown && dropdown.isExpanded()) {
+                if (dropdown.charTyped(chr, modifiers)) {
+                    return true;
+                }
+            }
+        }
+
+        return super.charTyped(chr, modifiers);
     }
 
     private boolean handleControlShortcuts(int keyCode, int modifiers) {

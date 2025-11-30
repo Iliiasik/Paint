@@ -1,14 +1,11 @@
 {
   "item.bookeditor.creative_book": "创意书",
-  "bookeditor.default_title": "创意书",
-  "bookeditor.default_page": "欢迎！使用工具栏格式化文本，从 URL 插入/调整大小/移动图片（绝对位置），对齐文本并在画布上绘图。支持撤销/重做。",
 
   "screen.bookeditor.title": "创意书",
   "screen.bookeditor.book_title": "标题",
   "screen.bookeditor.image": "插入图片",
-  "screen.bookeditor.image_gif": "插入 GIF",
   "screen.bookeditor.add": "添加",
-  "screen.bookeditor.url_label": "图片 URL：",
+  "screen.bookeditor.url_label": "图片 URL",
   "screen.bookeditor.width_label": "宽度",
   "screen.bookeditor.height_label": "高度",
 

@@ -1,14 +1,11 @@
 {
   "item.bookeditor.creative_book": "كتاب إبداعي",
-  "bookeditor.default_title": "كتاب إبداعي",
-  "bookeditor.default_page": "مرحبًا! استخدم شريط الأدوات لتنسيق النص، إدراج/تغيير حجم/نقل الصور بموقع مطلق، محاذاة النص والرسم على اللوحة. يدعم التراجع/الإعادة.",
 
   "screen.bookeditor.title": "كتاب إبداعي",
   "screen.bookeditor.book_title": "العنوان",
   "screen.bookeditor.image": "إدراج صورة",
-  "screen.bookeditor.image_gif": "إدراج GIF",
   "screen.bookeditor.add": "إضافة",
-  "screen.bookeditor.url_label": "رابط الصورة:",
+  "screen.bookeditor.url_label": "رابط الصورة",
   "screen.bookeditor.width_label": "العرض",
   "screen.bookeditor.height_label": "الارتفاع",
 

@@ -1,14 +1,11 @@
 {
   "item.bookeditor.creative_book": "Livre Créatif",
-  "bookeditor.default_title": "Livre Créatif",
-  "bookeditor.default_page": "Bienvenue ! Utilisez la barre d'outils pour formater le texte, insérer/redimensionner/déplacer des images en position absolue, aligner le texte et dessiner sur la toile. Annuler/Rétablir pris en charge.",
 
   "screen.bookeditor.title": "Livre Créatif",
   "screen.bookeditor.book_title": "Titre",
   "screen.bookeditor.image": "Insérer une image",
-  "screen.bookeditor.image_gif": "Insérer un GIF",
   "screen.bookeditor.add": "Ajouter",
-  "screen.bookeditor.url_label": "URL de l'image:",
+  "screen.bookeditor.url_label": "URL de l'image",
   "screen.bookeditor.width_label": "Largeur",
   "screen.bookeditor.height_label": "Hauteur",
 

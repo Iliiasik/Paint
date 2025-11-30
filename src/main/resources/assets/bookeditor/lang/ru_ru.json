@@ -1,13 +1,12 @@
 {
   "item.bookeditor.creative_book": "Творческая книга",
-  "bookeditor.default_title": "Творческая книга",
-  "bookeditor.default_page": "Добро пожаловать! Используйте панель инструментов для форматирования текста, вставки/масштабирования/перемещения изображений с абсолютным позиционированием, выравнивания текста и рисования на холсте. Поддерживаются Undo/Redo.",
   "screen.bookeditor.title": "Творческая книга",
   "screen.bookeditor.book_title": "Заголовок",
   "screen.bookeditor.image": "Вставить изображение",
-  "screen.bookeditor.image_gif": "Вставить GIF",
   "screen.bookeditor.add": "Добавить",
-
+  "screen.bookeditor.url_label": "Ссылка на иображение URL",
+  "screen.bookeditor.width_label": "Ширина",
+  "screen.bookeditor.height_label": "Высота",
   "tooltip.bookeditor.textbox": "Текстовое поле — Создать новое текстовое поле",
   "tooltip.bookeditor.image": "Изображение — Вставить изображение по URL",
   "tooltip.bookeditor.canvas_color": "Цвет фона холста",
@@ -25,7 +24,6 @@
   "tooltip.bookeditor.sign": "Подписать книгу",
   "tooltip.bookeditor.increase_size": "Увеличить размер текста",
   "tooltip.bookeditor.decrease_size": "Уменьшить размер текста",
-
   "tooltip.bookeditor.undo": "Отменить",
   "tooltip.bookeditor.redo": "Вернуть",
   "tooltip.bookeditor.bold": "Полужирный",
@@ -36,8 +34,8 @@
   "tooltip.bookeditor.align_center": "Выравнять по центру",
   "tooltip.bookeditor.align_right": "Выровнять вправо",
   "tooltip.bookeditor.text_color": "Цвет текста",
+  "tooltip.bookeditor.go_to_page": "Go to Page",
   "narrator.select.color": "Выбрать цвет",
-
   "screen.bookeditor.size_limit_reached": "Превышен лимит размера книги — дальнейшие изменения отключены",
   "screen.bookeditor.page_not_saved": "Страница не сохранена: превышен лимит размера книги",
   "screen.bookeditor.failed_save": "Не удалось сохранить страницу: данные превышают лимиты",

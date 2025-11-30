@@ -23,7 +23,7 @@ public class BookeditorClient implements ClientModInitializer {
             BookData.ensureDefaults(stack, mc.player);
             mc.setScreen(new BookScreen(stack, hand));
         };
-
+        
         Item creativeBook = Registries.ITEM.get(new Identifier("bookeditor", "creative_book"));
         ModelPredicateProviderRegistry.register(
                 creativeBook,

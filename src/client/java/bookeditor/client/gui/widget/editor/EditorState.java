@@ -34,6 +34,7 @@ public class EditorState {
     public int argb = 0xFF202020;
     public float size = 1.0f;
     public int textBoxBgColor = 0x00FFFFFF;
+    public String plankType = "minecraft:dark_oak_planks";
     public int scrollY = 0;
     public String clipboard = "";
     public final TextBoxCaret textBoxCaret = new TextBoxCaret();
@@ -112,6 +113,10 @@ public class EditorState {
     }
     public EditorWidget getWidget() {
         return widget;
+    }
+
+    public void setPlankType(String plankType) {
+        this.plankType = plankType != null ? plankType : "minecraft:dark_oak_planks";
     }
 
     public void showTransientMessage(String msg, long durationMillis) {

@@ -1,14 +1,11 @@
 {
   "item.bookeditor.creative_book": "Kreatives Buch",
-  "bookeditor.default_title": "Kreatives Buch",
-  "bookeditor.default_page": "Willkommen! Verwende die Werkzeugleiste, um Text zu formatieren, Bilder mit absoluter Position einzufügen/zu skalieren/zu verschieben, Text auszurichten und auf der Leinwand zu zeichnen. Rückgängig/Wiederherstellen unterstützt.",
 
   "screen.bookeditor.title": "Kreatives Buch",
   "screen.bookeditor.book_title": "Titel",
   "screen.bookeditor.image": "Bild einfügen",
-  "screen.bookeditor.image_gif": "GIF einfügen",
   "screen.bookeditor.add": "Hinzufügen",
-  "screen.bookeditor.url_label": "Bild-URL:",
+  "screen.bookeditor.url_label": "Bild-URL",
   "screen.bookeditor.width_label": "Breite",
   "screen.bookeditor.height_label": "Höhe",
 

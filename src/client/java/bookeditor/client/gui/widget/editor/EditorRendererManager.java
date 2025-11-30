@@ -1,15 +1,19 @@
 package bookeditor.client.gui.widget.editor;
 
+import bookeditor.client.util.PlankTextureUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class EditorRendererManager {
     private final EditorState state;
-    private static final Identifier BACKGROUND_TEXTURE = Identifier.of("minecraft", "textures/block/dark_oak_planks.png");
 
     public EditorRendererManager(EditorState state, EditorToolManager toolManager, EditorStyleManager styleManager) {
         this.state = state;
+    }
+
+    private Identifier getBackgroundTexture() {
+        return PlankTextureUtil.getTextureForPlank(state.plankType);
     }
     public void renderButton(DrawContext ctx, int mouseX, int mouseY, float delta) {
         EditorWidget widget = state.getWidget();
@@ -54,6 +58,7 @@ public class EditorRendererManager {
 
         ctx.fill(x - 1, y - 1, x + w + 1, y + h + 1, frame);
 
+        Identifier backgroundTexture = getBackgroundTexture();
         int textureSize = 16;
         int tilesX = (w + textureSize - 1) / textureSize;
         int tilesY = (h + textureSize - 1) / textureSize;
@@ -66,7 +71,7 @@ public class EditorRendererManager {
                 int drawH = Math.min(textureSize, y + h - drawY);
 
                 if (drawW > 0 && drawH > 0) {
-                    ctx.drawTexture(BACKGROUND_TEXTURE, drawX, drawY, 0, 0, drawW, drawH, textureSize, textureSize);
+                    ctx.drawTexture(backgroundTexture, drawX, drawY, 0, 0, drawW, drawH, textureSize, textureSize);
                 }
             }
         }
