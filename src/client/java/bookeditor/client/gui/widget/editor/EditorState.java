@@ -102,18 +102,6 @@ public class EditorState {
         scrollY = 0;
     }
 
-    public int innerLeft() {
-        return widget.getX() + PAD_OUT;
-    }
-    public int innerTop() {
-        return widget.getY() + PAD_OUT;
-    }
-    public int innerW() {
-        return Math.max(0, widget.getWidth() - PAD_OUT * 2);
-    }
-    public int innerH() {
-        return Math.max(0, widget.getHeight() - PAD_OUT * 2);
-    }
 
     private void updateCache() {
         int wx = widget.getX();
@@ -190,11 +178,6 @@ public class EditorState {
     public void setUserZoom(float zoom) {
         this.userZoom = Math.max(1.0f, Math.min(5.0f, zoom));
         clampPanOffset();
-    }
-    public void resetZoomAndPan() {
-        this.userZoom = 1.0f;
-        this.panOffsetX = 0;
-        this.panOffsetY = 0;
     }
     public void clampPanOffset() {
         if (userZoom <= 1.0f) {

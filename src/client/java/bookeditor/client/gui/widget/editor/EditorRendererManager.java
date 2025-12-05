@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 public class EditorRendererManager {
     private final EditorState state;
 
-    public EditorRendererManager(EditorState state, EditorToolManager toolManager, EditorStyleManager styleManager) {
+    public EditorRendererManager(EditorState state) {
         this.state = state;
     }
 

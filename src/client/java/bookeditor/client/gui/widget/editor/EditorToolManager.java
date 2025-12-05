@@ -86,7 +86,7 @@ public class EditorToolManager {
         historyManager.notifyDirty();
     }
 
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+    public boolean mouseScrolled() {
         return true;
     }
 
@@ -145,7 +145,7 @@ public class EditorToolManager {
         return true;
     }
 
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dx, double dy) {
+    public boolean mouseDragged(double mouseX, double mouseY) {
         if (state.isPanning) {
             int deltaX = (int) mouseX - state.panStartMouseX;
             int deltaY = (int) mouseY - state.panStartMouseY;
@@ -174,15 +174,14 @@ public class EditorToolManager {
             state.isPanning = false;
             return widget.superMouseReleased(mouseX, mouseY, button);
         }
-        boolean changed = false;
-        if (state.imageInteraction.mouseReleased()) changed = true;
-        if (state.textBoxInteraction.mouseReleased()) changed = true;
-        if (state.drawingTool.endStroke()) changed = true;
+        boolean changed = state.imageInteraction.mouseReleased();
+        changed |= state.textBoxInteraction.mouseReleased();
+        changed |= state.drawingTool.endStroke();
         if (changed) historyManager.notifyDirty();
         return widget.superMouseReleased(mouseX, mouseY, button);
     }
 
-    public boolean charTyped(char chr, int modifiers) {
+    public boolean charTyped(char chr) {
         EditorWidget widget = state.getWidget();
         if (!state.editable || state.page == null || !widget.isFocused()) return false;
         if (state.drawingTool.isActive() || state.eraserTool.isActive() || state.textBoxCreationTool.isActive()) return false;
@@ -205,7 +204,7 @@ public class EditorToolManager {
         return handled;
     }
 
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(int keyCode, int modifiers) {
         EditorWidget widget = state.getWidget();
         if (!widget.isFocused()) return false;
         if ((keyCode == GLFW.GLFW_KEY_DELETE || keyCode == GLFW.GLFW_KEY_BACKSPACE) && state.page != null) {

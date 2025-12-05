@@ -55,17 +55,6 @@ public class ZoomSliderWidget extends ClickableWidget {
         return inputHandler.handleMouseScroll(amount, getX(), getY(), width, height, mouseX, mouseY);
     }
 
-    public float getZoomLevel() {
-        return state.zoomLevel;
-    }
-
-    public void setZoomLevel(float zoom) {
-        state.setZoom(zoom);
-    }
-
-    public void resetZoom() {
-        state.reset();
-    }
 
     @Override
     protected void appendClickableNarrations(NarrationMessageBuilder builder) {
