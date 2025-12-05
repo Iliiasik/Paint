@@ -15,6 +15,14 @@
 </p>
 
 <p align="center">
+  <img src="https://github.com/user-attachments/assets/407c857f-eae3-45e8-ad9f-fc14ce441642" alt="Zoom" width="320"/>
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/97a3414b-9232-4faa-8c33-f569f9aa1099" alt="editor-zoom"/>
+</p>
+
+<p align="center">
   <img src="https://github.com/user-attachments/assets/2ea4fbab-f858-4909-9dc1-10ae85d4f006" alt="Image interaction" width="320"/>
 </p>
 
