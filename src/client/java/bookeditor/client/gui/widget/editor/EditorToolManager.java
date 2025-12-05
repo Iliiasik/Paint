@@ -68,10 +68,6 @@ public class EditorToolManager {
         state.mode = EditorMode.OBJECT_MODE;
     }
 
-    public boolean isTextBoxToolActive() {
-        return state.textBoxCreationTool.isActive();
-    }
-
     public void insertImage(String url, int w, int h, boolean gif) {
         if (!state.editable || state.page == null) return;
         if (state.page.nodes.size() >= BookDataUtils.MAX_NODES_PER_PAGE) {
@@ -90,22 +86,7 @@ public class EditorToolManager {
         historyManager.notifyDirty();
     }
 
-    public void insertTextBox() {
-        if (!state.editable || state.page == null) return;
-        if (state.page.nodes.size() >= BookDataUtils.MAX_NODES_PER_PAGE) {
-            state.showTransientMessage("Page node limit reached", 3000);
-            return;
-        }
-        historyManager.pushSnapshotOnce();
-        BookData.TextBoxNode box = new BookData.TextBoxNode(50, 50 + state.scrollY, 300, 100);
-        box.bgArgb = state.textBoxBgColor;
-        box.setText("", state.bold, state.italic, state.underline, state.argb, state.size);
-        state.page.nodes.add(box);
-        state.mode = EditorMode.OBJECT_MODE;
-        historyManager.notifyDirty();
-    }
-
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+    public boolean mouseScrolled() {
         return true;
     }
 
@@ -115,6 +96,15 @@ public class EditorToolManager {
         widget.setFocused(true);
         int mx = (int) mouseX;
         int my = (int) mouseY;
+        if (state.canPan() && button == 0) {
+            state.isPanning = true;
+            state.panStartMouseX = mx;
+            state.panStartMouseY = my;
+            state.panStartOffsetX = state.panOffsetX;
+            state.panStartOffsetY = state.panOffsetY;
+            return true;
+        }
+        if (!state.editable) return true;
         if (state.textBoxCreationTool.isActive()) {
             historyManager.pushSnapshotOnce();
             BookData.TextBoxNode box = new BookData.TextBoxNode(
@@ -155,7 +145,15 @@ public class EditorToolManager {
         return true;
     }
 
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dx, double dy) {
+    public boolean mouseDragged(double mouseX, double mouseY) {
+        if (state.isPanning) {
+            int deltaX = (int) mouseX - state.panStartMouseX;
+            int deltaY = (int) mouseY - state.panStartMouseY;
+            state.panOffsetX = state.panStartOffsetX + deltaX;
+            state.panOffsetY = state.panStartOffsetY + deltaY;
+            state.clampPanOffset();
+            return true;
+        }
         if (state.eraserTool.isActive()) {
             state.eraserTool.erase(state.page, (int) mouseX, (int) mouseY, state.contentScreenLeft(), state.contentScreenTop(), state.scale(), state.scrollY);
             historyManager.notifyDirty();
@@ -172,15 +170,18 @@ public class EditorToolManager {
 
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
         EditorWidget widget = state.getWidget();
-        boolean changed = false;
-        if (state.imageInteraction.mouseReleased()) changed = true;
-        if (state.textBoxInteraction.mouseReleased()) changed = true;
-        if (state.drawingTool.endStroke()) changed = true;
+        if (state.isPanning) {
+            state.isPanning = false;
+            return widget.superMouseReleased(mouseX, mouseY, button);
+        }
+        boolean changed = state.imageInteraction.mouseReleased();
+        changed |= state.textBoxInteraction.mouseReleased();
+        changed |= state.drawingTool.endStroke();
         if (changed) historyManager.notifyDirty();
         return widget.superMouseReleased(mouseX, mouseY, button);
     }
 
-    public boolean charTyped(char chr, int modifiers) {
+    public boolean charTyped(char chr) {
         EditorWidget widget = state.getWidget();
         if (!state.editable || state.page == null || !widget.isFocused()) return false;
         if (state.drawingTool.isActive() || state.eraserTool.isActive() || state.textBoxCreationTool.isActive()) return false;
@@ -203,7 +204,7 @@ public class EditorToolManager {
         return handled;
     }
 
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(int keyCode, int modifiers) {
         EditorWidget widget = state.getWidget();
         if (!widget.isFocused()) return false;
         if ((keyCode == GLFW.GLFW_KEY_DELETE || keyCode == GLFW.GLFW_KEY_BACKSPACE) && state.page != null) {

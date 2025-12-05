@@ -40,6 +40,7 @@
   "tooltip.bookeditor.go_to_page": "पृष्ठ पर जाएँ",
 
   "narrator.select.color": "रंग चुनें",
+  "narrator.zoom.slider": "ज़ूम स्लाइडर",
 
   "screen.bookeditor.size_limit_reached": "पुस्तक आकार सीमा तक पहुँच गई - आगे के परिवर्तन अक्षम हैं",
   "screen.bookeditor.page_not_saved": "पृष्ठ सहेजा नहीं गया: पुस्तक आकार सीमा तक पहुँच गई",

@@ -43,9 +43,9 @@ public class ColorPickerState {
 
     public void updateHoverProgress(boolean isHovering, float deltaTime) {
         if (isHovering && hoverProgress < 1.0f) {
-            hoverProgress = Math.min(1.0f, hoverProgress + deltaTime * 6.0f);
+            hoverProgress = Math.min(1.0f, hoverProgress + deltaTime * 10.0f);
         } else if (!isHovering && hoverProgress > 0.0f) {
-            hoverProgress = Math.max(0.0f, hoverProgress - deltaTime * 6.0f);
+            hoverProgress = Math.max(0.0f, hoverProgress - deltaTime * 10.0f);
         }
     }
 

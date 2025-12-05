@@ -8,6 +8,7 @@ import bookeditor.client.gui.render.LimitBadgeRenderer;
 import bookeditor.client.gui.widget.button.ColorPickerDropdown;
 import bookeditor.client.gui.widget.field.CustomTextField;
 import bookeditor.client.gui.widget.editor.EditorWidget;
+import bookeditor.client.gui.widget.zoom.ZoomSliderWidget;
 import bookeditor.client.net.BookSyncService;
 import bookeditor.client.util.ImageCache;
 import bookeditor.data.BookData;
@@ -41,6 +42,7 @@ public class BookScreen extends Screen implements WidgetHost {
     private EditorWidget editor;
     private BookNavigator bookNavigator;
     private AdaptiveToolbar toolbar;
+    private ZoomSliderWidget zoomSlider;
 
     private boolean nbtTooLarge = false;
     private long currentNbtSize = 0L;
@@ -91,7 +93,9 @@ public class BookScreen extends Screen implements WidgetHost {
         y += BTN_H + GAP;
 
         int editorY = y;
-        int editorWidth = this.width - MARGIN * 2;
+        int zoomSliderWidth = 32;
+        int zoomSliderGap = 4;
+        int editorWidth = this.width - MARGIN * 2 - zoomSliderWidth - zoomSliderGap;
         int editorHeight = Math.max(160, this.height - editorY - MARGIN);
 
         editor = new EditorWidget(
@@ -100,6 +104,13 @@ public class BookScreen extends Screen implements WidgetHost {
         );
         editor.setPlankType(data.plankType);
         addDrawableChild(editor);
+
+        int zoomSliderX = MARGIN + editorWidth + zoomSliderGap;
+        zoomSlider = new ZoomSliderWidget(
+                zoomSliderX, editorY, zoomSliderWidth, editorHeight,
+                this::onZoomChanged
+        );
+        addDrawableChild(zoomSlider);
 
         toolbar = new AdaptiveToolbar(
                 this, editor, this::onDirty,
@@ -216,6 +227,12 @@ public class BookScreen extends Screen implements WidgetHost {
             data.signed = true;
             updateUI();
             onDirty();
+        }
+    }
+
+    private void onZoomChanged(float zoom) {
+        if (editor != null) {
+            editor.setUserZoom(zoom);
         }
     }
 

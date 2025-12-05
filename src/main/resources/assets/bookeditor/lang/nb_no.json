@@ -40,6 +40,7 @@
   "tooltip.bookeditor.go_to_page": "Gå Til Side",
 
   "narrator.select.color": "Velg Farge",
+  "narrator.zoom.slider": "Zoomglider",
 
   "screen.bookeditor.size_limit_reached": "Bokstørrelsesgrense nådd — ytterligere endringer forbudt",
   "screen.bookeditor.page_not_saved": "Side ikke lagret: bokstørrelsesgrense nådd",

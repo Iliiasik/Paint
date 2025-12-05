@@ -24,8 +24,8 @@ public class EditorWidget extends ClickableWidget {
         this.historyManager = new EditorHistoryManager(state);
         this.styleManager = new EditorStyleManager(state, historyManager);
         this.toolManager = new EditorToolManager(state, historyManager);
-        this.rendererManager = new EditorRendererManager(state, toolManager, styleManager);
-        this.active = editable;
+        this.rendererManager = new EditorRendererManager(state);
+        this.active = true;
     }
 
     public void setWidgetHeight(int height) {
@@ -66,9 +66,6 @@ public class EditorWidget extends ClickableWidget {
         return historyManager.redo();
     }
 
-    public void deactivateAllTools() {
-        toolManager.deactivateAllTools();
-    }
 
     public void setBold(boolean bold) {
         styleManager.setBold(bold);
@@ -185,7 +182,7 @@ public class EditorWidget extends ClickableWidget {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        return toolManager.mouseScrolled(mouseX, mouseY, amount);
+        return toolManager.mouseScrolled();
     }
 
     @Override
@@ -195,7 +192,7 @@ public class EditorWidget extends ClickableWidget {
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dx, double dy) {
-        return toolManager.mouseDragged(mouseX, mouseY, button, dx, dy);
+        return toolManager.mouseDragged(mouseX, mouseY);
     }
 
     @Override
@@ -205,12 +202,12 @@ public class EditorWidget extends ClickableWidget {
 
     @Override
     public boolean charTyped(char chr, int modifiers) {
-        return toolManager.charTyped(chr, modifiers);
+        return toolManager.charTyped(chr);
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        return toolManager.keyPressed(keyCode, scanCode, modifiers);
+        return toolManager.keyPressed(keyCode, modifiers);
     }
 
     @Override
@@ -234,6 +231,11 @@ public class EditorWidget extends ClickableWidget {
         }
         return state.page.strokes.size();
     }
+
+    public void setUserZoom(float zoom) {
+        state.setUserZoom(zoom);
+    }
+
 
 }
 

@@ -40,6 +40,7 @@
   "tooltip.bookeditor.go_to_page": "Přejít Na Stránku",
 
   "narrator.select.color": "Vybrat Barvu",
+  "narrator.zoom.slider": "Posuvník Přiblížení",
 
   "screen.bookeditor.size_limit_reached": "Dosažen limit velikosti knihy — další změny zakázány",
   "screen.bookeditor.page_not_saved": "Stránka nebyla uložena: dosažen limit velikosti knihy",

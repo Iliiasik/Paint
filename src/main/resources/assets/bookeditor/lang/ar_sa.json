@@ -40,6 +40,7 @@
   "tooltip.bookeditor.go_to_page": "الانتقال إلى الصفحة",
 
   "narrator.select.color": "اختر لونًا",
+  "narrator.zoom.slider": "شريط التكبير",
 
   "screen.bookeditor.size_limit_reached": "تم الوصول إلى حد حجم الكتاب - تم تعطيل التغييرات الإضافية",
   "screen.bookeditor.page_not_saved": "لم يتم حفظ الصفحة: تم الوصول إلى حد حجم الكتاب",

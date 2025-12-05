@@ -40,6 +40,7 @@
   "tooltip.bookeditor.go_to_page": "Đi Tới Trang",
 
   "narrator.select.color": "Chọn Màu",
+  "narrator.zoom.slider": "Thanh Thu Phóng",
 
   "screen.bookeditor.size_limit_reached": "Đã đạt giới hạn kích thước sách — các thay đổi bổ sung bị vô hiệu hóa",
   "screen.bookeditor.page_not_saved": "Trang không được lưu: đã đạt giới hạn kích thước sách",

@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 public class EditorRendererManager {
     private final EditorState state;
 
-    public EditorRendererManager(EditorState state, EditorToolManager toolManager, EditorStyleManager styleManager) {
+    public EditorRendererManager(EditorState state) {
         this.state = state;
     }
 
@@ -16,6 +16,7 @@ public class EditorRendererManager {
         return PlankTextureUtil.getTextureForPlank(state.plankType);
     }
     public void renderButton(DrawContext ctx, int mouseX, int mouseY, float delta) {
+        state.updateSmooth();
         EditorWidget widget = state.getWidget();
         renderFrame(ctx, widget);
         renderCanvas(ctx);
@@ -77,26 +78,32 @@ public class EditorRendererManager {
         }
     }
     private void renderCanvas(DrawContext ctx) {
+        int vLeft = state.canvasVisualLeft();
+        int vTop = state.canvasVisualTop();
+        int vWidth = state.canvasVisualWidth();
+        int vHeight = state.canvasVisualHeight();
+
+        ctx.enableScissor(vLeft, vTop, vLeft + vWidth, vTop + vHeight);
+
         int cLeft = state.canvasScreenLeft();
         int cTop = state.canvasScreenTop();
         int scaledW = (int) Math.floor(state.scale() * (EditorState.LOGICAL_W + EditorState.PAD_IN * 2));
         int scaledH = (int) Math.floor(state.scale() * (EditorState.LOGICAL_H + EditorState.PAD_IN * 2));
         int bg = state.page != null ? state.page.bgArgb : 0xFFF8F8F8;
         ctx.fill(cLeft, cTop, cLeft + scaledW, cTop + scaledH, bg);
-        ctx.fill(cLeft - 1, cTop - 1, cLeft + scaledW + 1, cTop, 0x33000000);
-        ctx.fill(cLeft - 1, cTop + scaledH, cLeft + scaledW + 1, cTop + scaledH + 1, 0x33000000);
-        ctx.fill(cLeft - 1, cTop, cLeft, cTop + scaledH, 0x33000000);
-        ctx.fill(cLeft + scaledW, cTop, cLeft + scaledW + 1, cTop + scaledH, 0x33000000);
+
+        ctx.disableScissor();
+
+        ctx.fill(vLeft - 1, vTop - 1, vLeft + vWidth + 1, vTop, 0x33000000);
+        ctx.fill(vLeft - 1, vTop + vHeight, vLeft + vWidth + 1, vTop + vHeight + 1, 0x33000000);
+        ctx.fill(vLeft - 1, vTop, vLeft, vTop + vHeight, 0x33000000);
+        ctx.fill(vLeft + vWidth, vTop, vLeft + vWidth + 1, vTop + vHeight, 0x33000000);
     }
     private void enableScissor(DrawContext ctx) {
-        int cLeft = state.canvasScreenLeft();
-        int cTop = state.canvasScreenTop();
-        int scaledW = (int) Math.floor(state.scale() * (EditorState.LOGICAL_W + EditorState.PAD_IN * 2));
-        int scaledH = (int) Math.floor(state.scale() * (EditorState.LOGICAL_H + EditorState.PAD_IN * 2));
-        int scLeft = Math.max(state.innerLeft(), cLeft);
-        int scTop = Math.max(state.innerTop(), cTop);
-        int scRight = Math.min(state.innerLeft() + state.innerW(), cLeft + scaledW);
-        int scBottom = Math.min(state.innerTop() + state.innerH(), cTop + scaledH);
-        if (scRight > scLeft && scBottom > scTop) ctx.enableScissor(scLeft, scTop, scRight, scBottom);
+        int vLeft = state.canvasVisualLeft();
+        int vTop = state.canvasVisualTop();
+        int vWidth = state.canvasVisualWidth();
+        int vHeight = state.canvasVisualHeight();
+        ctx.enableScissor(vLeft, vTop, vLeft + vWidth, vTop + vHeight);
     }
 }
