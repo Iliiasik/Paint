@@ -26,6 +26,7 @@ public class ZoomSliderWidget extends ClickableWidget {
         float deltaTime = (currentTime - state.lastFrameTime) / 1000.0f;
         state.lastFrameTime = currentTime;
 
+        state.updateSmooth();
         state.updateHoverProgress(this.isHovered(), deltaTime);
         renderer.render(ctx, getX(), getY(), width, height, state);
     }

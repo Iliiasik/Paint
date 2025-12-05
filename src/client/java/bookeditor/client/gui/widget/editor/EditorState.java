@@ -45,6 +45,21 @@ public class EditorState {
     public int panStartMouseY = 0;
     public int panStartOffsetX = 0;
     public int panStartOffsetY = 0;
+
+    private float smoothZoom = 1.0f;
+    private float smoothPanX = 0.0f;
+    private float smoothPanY = 0.0f;
+    private static final float SMOOTH_FACTOR = 0.15f;
+
+    private int cachedWidgetX = -1;
+    private int cachedWidgetY = -1;
+    private int cachedWidgetW = -1;
+    private int cachedWidgetH = -1;
+    private double cachedBaseScale = -1;
+    private int cachedVisualW = -1;
+    private int cachedVisualH = -1;
+    private int cachedVisualLeft = -1;
+    private int cachedVisualTop = -1;
     public final TextBoxCaret textBoxCaret = new TextBoxCaret();
     public final ImageInteraction imageInteraction = new ImageInteraction();
     public final TextBoxInteraction textBoxInteraction = new TextBoxInteraction();
@@ -74,7 +89,6 @@ public class EditorState {
     }
     public void setEditable(boolean editable) {
         this.editable = editable;
-        widget.active = editable;
     }
     public void setContent(BookData.Page page) {
         this.page = page;
@@ -100,35 +114,72 @@ public class EditorState {
     public int innerH() {
         return Math.max(0, widget.getHeight() - PAD_OUT * 2);
     }
+
+    private void updateCache() {
+        int wx = widget.getX();
+        int wy = widget.getY();
+        int ww = widget.getWidth();
+        int wh = widget.getHeight();
+        if (wx != cachedWidgetX || wy != cachedWidgetY || ww != cachedWidgetW || wh != cachedWidgetH) {
+            cachedWidgetX = wx;
+            cachedWidgetY = wy;
+            cachedWidgetW = ww;
+            cachedWidgetH = wh;
+            int iw = Math.max(0, ww - PAD_OUT * 2);
+            int ih = Math.max(0, wh - PAD_OUT * 2);
+            double sw = (double) iw / (LOGICAL_W + PAD_IN * 2.0);
+            double sh = (double) ih / (LOGICAL_H + PAD_IN * 2.0);
+            cachedBaseScale = Math.max(0.1, Math.min(sw, sh));
+            cachedVisualW = (int) Math.floor(cachedBaseScale * (LOGICAL_W + PAD_IN * 2));
+            cachedVisualH = (int) Math.floor(cachedBaseScale * (LOGICAL_H + PAD_IN * 2));
+            cachedVisualLeft = (wx + PAD_OUT) + (iw - cachedVisualW) / 2;
+            cachedVisualTop = (wy + PAD_OUT) + (ih - cachedVisualH) / 2;
+        }
+    }
+
+    public void updateSmooth() {
+        smoothZoom += (userZoom - smoothZoom) * SMOOTH_FACTOR;
+        smoothPanX += (panOffsetX - smoothPanX) * SMOOTH_FACTOR;
+        smoothPanY += (panOffsetY - smoothPanY) * SMOOTH_FACTOR;
+        if (Math.abs(smoothZoom - userZoom) < 0.001f) smoothZoom = userZoom;
+        if (Math.abs(smoothPanX - panOffsetX) < 0.5f) smoothPanX = panOffsetX;
+        if (Math.abs(smoothPanY - panOffsetY) < 0.5f) smoothPanY = panOffsetY;
+    }
+
     public double baseScale() {
-        double sw = (double) innerW() / (LOGICAL_W + PAD_IN * 2.0);
-        double sh = (double) innerH() / (LOGICAL_H + PAD_IN * 2.0);
-        return Math.max(0.1, Math.min(sw, sh));
+        updateCache();
+        return cachedBaseScale;
     }
     public double scale() {
-        return baseScale() * userZoom;
+        return baseScale() * smoothZoom;
     }
     public int canvasVisualWidth() {
-        return (int) Math.floor(baseScale() * (LOGICAL_W + PAD_IN * 2));
+        updateCache();
+        return cachedVisualW;
     }
     public int canvasVisualHeight() {
-        return (int) Math.floor(baseScale() * (LOGICAL_H + PAD_IN * 2));
+        updateCache();
+        return cachedVisualH;
     }
     public int canvasVisualLeft() {
-        return innerLeft() + (innerW() - canvasVisualWidth()) / 2;
+        updateCache();
+        return cachedVisualLeft;
     }
     public int canvasVisualTop() {
-        return innerTop() + (innerH() - canvasVisualHeight()) / 2;
+        updateCache();
+        return cachedVisualTop;
     }
     public int canvasScreenLeft() {
-        int zoomedW = (int) Math.floor(scale() * (LOGICAL_W + PAD_IN * 2));
+        double sc = scale();
+        int zoomedW = (int) Math.floor(sc * (LOGICAL_W + PAD_IN * 2));
         int centerOffsetX = (canvasVisualWidth() - zoomedW) / 2;
-        return canvasVisualLeft() + centerOffsetX + panOffsetX;
+        return canvasVisualLeft() + centerOffsetX + (int) smoothPanX;
     }
     public int canvasScreenTop() {
-        int zoomedH = (int) Math.floor(scale() * (LOGICAL_H + PAD_IN * 2));
+        double sc = scale();
+        int zoomedH = (int) Math.floor(sc * (LOGICAL_H + PAD_IN * 2));
         int centerOffsetY = (canvasVisualHeight() - zoomedH) / 2;
-        return canvasVisualTop() + centerOffsetY + panOffsetY;
+        return canvasVisualTop() + centerOffsetY + (int) smoothPanY;
     }
     public int contentScreenLeft() {
         return canvasScreenLeft() + (int) Math.round(scale() * PAD_IN);

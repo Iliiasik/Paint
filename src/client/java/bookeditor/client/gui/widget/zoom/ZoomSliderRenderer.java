@@ -40,7 +40,7 @@ public class ZoomSliderRenderer {
         ctx.fill(thumbX + 1, thumbY + 1, thumbX + thumbWidth - 1, thumbY + 2, topHighlight);
 
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-        String percentText = String.format("%.0f%%", state.getZoomPercent());
+        String percentText = String.format("%.0f%%", state.getDisplayZoomPercent());
         int textWidth = textRenderer.getWidth(percentText);
         int textX = x + (width - textWidth) / 2;
         int textY = y + height - 14;

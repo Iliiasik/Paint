@@ -68,10 +68,6 @@ public class EditorToolManager {
         state.mode = EditorMode.OBJECT_MODE;
     }
 
-    public boolean isTextBoxToolActive() {
-        return state.textBoxCreationTool.isActive();
-    }
-
     public void insertImage(String url, int w, int h, boolean gif) {
         if (!state.editable || state.page == null) return;
         if (state.page.nodes.size() >= BookDataUtils.MAX_NODES_PER_PAGE) {
@@ -90,21 +86,6 @@ public class EditorToolManager {
         historyManager.notifyDirty();
     }
 
-    public void insertTextBox() {
-        if (!state.editable || state.page == null) return;
-        if (state.page.nodes.size() >= BookDataUtils.MAX_NODES_PER_PAGE) {
-            state.showTransientMessage("Page node limit reached", 3000);
-            return;
-        }
-        historyManager.pushSnapshotOnce();
-        BookData.TextBoxNode box = new BookData.TextBoxNode(50, 50 + state.scrollY, 300, 100);
-        box.bgArgb = state.textBoxBgColor;
-        box.setText("", state.bold, state.italic, state.underline, state.argb, state.size);
-        state.page.nodes.add(box);
-        state.mode = EditorMode.OBJECT_MODE;
-        historyManager.notifyDirty();
-    }
-
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         return true;
     }
@@ -115,9 +96,7 @@ public class EditorToolManager {
         widget.setFocused(true);
         int mx = (int) mouseX;
         int my = (int) mouseY;
-        if (state.canPan() && button == 0 && state.mode == EditorMode.OBJECT_MODE
-                && state.imageInteraction.getSelectedImageIndex() < 0
-                && state.textBoxInteraction.getSelectedTextBoxIndex() < 0) {
+        if (state.canPan() && button == 0) {
             state.isPanning = true;
             state.panStartMouseX = mx;
             state.panStartMouseY = my;
@@ -125,6 +104,7 @@ public class EditorToolManager {
             state.panStartOffsetY = state.panOffsetY;
             return true;
         }
+        if (!state.editable) return true;
         if (state.textBoxCreationTool.isActive()) {
             historyManager.pushSnapshotOnce();
             BookData.TextBoxNode box = new BookData.TextBoxNode(

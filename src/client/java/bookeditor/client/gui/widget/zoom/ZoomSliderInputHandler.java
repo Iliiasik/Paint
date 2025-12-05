@@ -41,7 +41,7 @@ public class ZoomSliderInputHandler {
 
     public boolean handleMouseScroll(double amount, int x, int y, int width, int height, double mouseX, double mouseY) {
         if (mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height) {
-            float delta = (float)(amount * 0.1f);
+            float delta = (float)(amount * 0.25f);
             state.setZoom(state.zoomLevel + delta);
             onZoomChange.accept(state.zoomLevel);
             return true;

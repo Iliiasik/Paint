@@ -25,7 +25,7 @@ public class EditorWidget extends ClickableWidget {
         this.styleManager = new EditorStyleManager(state, historyManager);
         this.toolManager = new EditorToolManager(state, historyManager);
         this.rendererManager = new EditorRendererManager(state, toolManager, styleManager);
-        this.active = editable;
+        this.active = true;
     }
 
     public void setWidgetHeight(int height) {

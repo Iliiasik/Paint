@@ -16,6 +16,7 @@ public class EditorRendererManager {
         return PlankTextureUtil.getTextureForPlank(state.plankType);
     }
     public void renderButton(DrawContext ctx, int mouseX, int mouseY, float delta) {
+        state.updateSmooth();
         EditorWidget widget = state.getWidget();
         renderFrame(ctx, widget);
         renderCanvas(ctx);
