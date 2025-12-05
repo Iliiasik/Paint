@@ -108,15 +108,27 @@ public class EditorState {
     public double scale() {
         return baseScale() * userZoom;
     }
+    public int canvasVisualWidth() {
+        return (int) Math.floor(baseScale() * (LOGICAL_W + PAD_IN * 2));
+    }
+    public int canvasVisualHeight() {
+        return (int) Math.floor(baseScale() * (LOGICAL_H + PAD_IN * 2));
+    }
+    public int canvasVisualLeft() {
+        return innerLeft() + (innerW() - canvasVisualWidth()) / 2;
+    }
+    public int canvasVisualTop() {
+        return innerTop() + (innerH() - canvasVisualHeight()) / 2;
+    }
     public int canvasScreenLeft() {
-        int scaledW = (int) Math.floor(scale() * (LOGICAL_W + PAD_IN * 2));
-        int baseLeft = innerLeft() + (innerW() - scaledW) / 2;
-        return baseLeft + panOffsetX;
+        int zoomedW = (int) Math.floor(scale() * (LOGICAL_W + PAD_IN * 2));
+        int centerOffsetX = (canvasVisualWidth() - zoomedW) / 2;
+        return canvasVisualLeft() + centerOffsetX + panOffsetX;
     }
     public int canvasScreenTop() {
-        int scaledH = (int) Math.floor(scale() * (LOGICAL_H + PAD_IN * 2));
-        int baseTop = innerTop() + (innerH() - scaledH) / 2;
-        return baseTop + panOffsetY;
+        int zoomedH = (int) Math.floor(scale() * (LOGICAL_H + PAD_IN * 2));
+        int centerOffsetY = (canvasVisualHeight() - zoomedH) / 2;
+        return canvasVisualTop() + centerOffsetY + panOffsetY;
     }
     public int contentScreenLeft() {
         return canvasScreenLeft() + (int) Math.round(scale() * PAD_IN);
@@ -125,7 +137,7 @@ public class EditorState {
         return canvasScreenTop() + (int) Math.round(scale() * PAD_IN);
     }
     public void setUserZoom(float zoom) {
-        this.userZoom = Math.max(1.0f, Math.min(2.0f, zoom));
+        this.userZoom = Math.max(1.0f, Math.min(5.0f, zoom));
         clampPanOffset();
     }
     public void resetZoomAndPan() {
@@ -139,10 +151,10 @@ public class EditorState {
             panOffsetY = 0;
             return;
         }
-        int scaledW = (int) Math.floor(scale() * (LOGICAL_W + PAD_IN * 2));
-        int scaledH = (int) Math.floor(scale() * (LOGICAL_H + PAD_IN * 2));
-        int maxPanX = Math.max(0, (scaledW - innerW()) / 2);
-        int maxPanY = Math.max(0, (scaledH - innerH()) / 2);
+        int zoomedW = (int) Math.floor(scale() * (LOGICAL_W + PAD_IN * 2));
+        int zoomedH = (int) Math.floor(scale() * (LOGICAL_H + PAD_IN * 2));
+        int maxPanX = Math.max(0, (zoomedW - canvasVisualWidth()) / 2);
+        int maxPanY = Math.max(0, (zoomedH - canvasVisualHeight()) / 2);
         panOffsetX = Math.max(-maxPanX, Math.min(maxPanX, panOffsetX));
         panOffsetY = Math.max(-maxPanY, Math.min(maxPanY, panOffsetY));
     }

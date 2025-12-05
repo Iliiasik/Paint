@@ -46,7 +46,7 @@ public class ZoomSliderRenderer {
         int textY = y + height - 14;
         ctx.drawText(textRenderer, percentText, textX, textY, TEXT_COLOR, false);
 
-        String maxLabel = "200%";
+        String maxLabel = "500%";
         int maxLabelWidth = textRenderer.getWidth(maxLabel);
         ctx.drawText(textRenderer, maxLabel, x + (width - maxLabelWidth) / 2, y + 4, 0xFF6B5F53, false);
     }

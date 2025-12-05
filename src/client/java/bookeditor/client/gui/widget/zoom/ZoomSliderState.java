@@ -2,7 +2,7 @@ package bookeditor.client.gui.widget.zoom;
 
 public class ZoomSliderState {
     public static final float MIN_ZOOM = 1.0f;
-    public static final float MAX_ZOOM = 2.0f;
+    public static final float MAX_ZOOM = 5.0f;
     public static final float DEFAULT_ZOOM = 1.0f;
 
     public float zoomLevel = DEFAULT_ZOOM;
