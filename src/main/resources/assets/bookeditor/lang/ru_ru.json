@@ -36,6 +36,7 @@
   "tooltip.bookeditor.text_color": "Цвет текста",
   "tooltip.bookeditor.go_to_page": "Go to Page",
   "narrator.select.color": "Выбрать цвет",
+  "narrator.zoom.slider": "Ползунок масштаба",
   "screen.bookeditor.size_limit_reached": "Превышен лимит размера книги — дальнейшие изменения отключены",
   "screen.bookeditor.page_not_saved": "Страница не сохранена: превышен лимит размера книги",
   "screen.bookeditor.failed_save": "Не удалось сохранить страницу: данные превышают лимиты",

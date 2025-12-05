@@ -40,6 +40,7 @@
   "tooltip.bookeditor.go_to_page": "ไปที่หน้า",
 
   "narrator.select.color": "เลือกสี",
+  "narrator.zoom.slider": "แถบซูม",
 
   "screen.bookeditor.size_limit_reached": "ถึงขีดจำกัดขนาดหนังสือแล้ว — การเปลี่ยนแปลงเพิ่มเติมถูกปิดใช้งาน",
   "screen.bookeditor.page_not_saved": "ไม่ได้บันทึกหน้า: ถึงขีดจำกัดขนาดหนังสือแล้ว",

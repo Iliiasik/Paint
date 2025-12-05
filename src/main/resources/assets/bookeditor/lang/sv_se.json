@@ -40,6 +40,7 @@
   "tooltip.bookeditor.go_to_page": "Gå Till Sida",
 
   "narrator.select.color": "Välj Färg",
+  "narrator.zoom.slider": "Zoomreglage",
 
   "screen.bookeditor.size_limit_reached": "Bokens storleksgräns nådd — ytterligare ändringar inaktiverade",
   "screen.bookeditor.page_not_saved": "Sidan sparades inte: bokens storleksgräns nådd",

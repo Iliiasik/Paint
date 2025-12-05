@@ -40,6 +40,7 @@
   "tooltip.bookeditor.go_to_page": "ページへ移動",
 
   "narrator.select.color": "色を選択",
+  "narrator.zoom.slider": "ズームスライダー",
 
   "screen.bookeditor.size_limit_reached": "本のサイズ制限に達しました — 追加の変更は無効です",
   "screen.bookeditor.page_not_saved": "ページが保存されませんでした: 本のサイズ制限に達しました",

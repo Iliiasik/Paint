@@ -40,6 +40,7 @@
   "tooltip.bookeditor.go_to_page": "Siirry Sivulle",
 
   "narrator.select.color": "Valitse Väri",
+  "narrator.zoom.slider": "Zoomausliukusäädin",
 
   "screen.bookeditor.size_limit_reached": "Kirjan kokoraja saavutettu — lisämuutokset estetty",
   "screen.bookeditor.page_not_saved": "Sivua ei tallennettu: kirjan kokoraja saavutettu",

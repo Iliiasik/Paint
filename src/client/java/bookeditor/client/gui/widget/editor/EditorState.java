@@ -37,6 +37,14 @@ public class EditorState {
     public String plankType = "minecraft:dark_oak_planks";
     public int scrollY = 0;
     public String clipboard = "";
+    public float userZoom = 1.0f;
+    public int panOffsetX = 0;
+    public int panOffsetY = 0;
+    public boolean isPanning = false;
+    public int panStartMouseX = 0;
+    public int panStartMouseY = 0;
+    public int panStartOffsetX = 0;
+    public int panStartOffsetY = 0;
     public final TextBoxCaret textBoxCaret = new TextBoxCaret();
     public final ImageInteraction imageInteraction = new ImageInteraction();
     public final TextBoxInteraction textBoxInteraction = new TextBoxInteraction();
@@ -92,24 +100,54 @@ public class EditorState {
     public int innerH() {
         return Math.max(0, widget.getHeight() - PAD_OUT * 2);
     }
-    public double scale() {
+    public double baseScale() {
         double sw = (double) innerW() / (LOGICAL_W + PAD_IN * 2.0);
         double sh = (double) innerH() / (LOGICAL_H + PAD_IN * 2.0);
         return Math.max(0.1, Math.min(sw, sh));
     }
+    public double scale() {
+        return baseScale() * userZoom;
+    }
     public int canvasScreenLeft() {
         int scaledW = (int) Math.floor(scale() * (LOGICAL_W + PAD_IN * 2));
-        return innerLeft() + Math.max(0, (innerW() - scaledW) / 2);
+        int baseLeft = innerLeft() + (innerW() - scaledW) / 2;
+        return baseLeft + panOffsetX;
     }
     public int canvasScreenTop() {
         int scaledH = (int) Math.floor(scale() * (LOGICAL_H + PAD_IN * 2));
-        return innerTop() + Math.max(0, (innerH() - scaledH) / 2);
+        int baseTop = innerTop() + (innerH() - scaledH) / 2;
+        return baseTop + panOffsetY;
     }
     public int contentScreenLeft() {
         return canvasScreenLeft() + (int) Math.round(scale() * PAD_IN);
     }
     public int contentScreenTop() {
         return canvasScreenTop() + (int) Math.round(scale() * PAD_IN);
+    }
+    public void setUserZoom(float zoom) {
+        this.userZoom = Math.max(1.0f, Math.min(2.0f, zoom));
+        clampPanOffset();
+    }
+    public void resetZoomAndPan() {
+        this.userZoom = 1.0f;
+        this.panOffsetX = 0;
+        this.panOffsetY = 0;
+    }
+    public void clampPanOffset() {
+        if (userZoom <= 1.0f) {
+            panOffsetX = 0;
+            panOffsetY = 0;
+            return;
+        }
+        int scaledW = (int) Math.floor(scale() * (LOGICAL_W + PAD_IN * 2));
+        int scaledH = (int) Math.floor(scale() * (LOGICAL_H + PAD_IN * 2));
+        int maxPanX = Math.max(0, (scaledW - innerW()) / 2);
+        int maxPanY = Math.max(0, (scaledH - innerH()) / 2);
+        panOffsetX = Math.max(-maxPanX, Math.min(maxPanX, panOffsetX));
+        panOffsetY = Math.max(-maxPanY, Math.min(maxPanY, panOffsetY));
+    }
+    public boolean canPan() {
+        return userZoom > 1.0f && !drawingTool.isActive() && !eraserTool.isActive() && !textBoxCreationTool.isActive();
     }
     public EditorWidget getWidget() {
         return widget;

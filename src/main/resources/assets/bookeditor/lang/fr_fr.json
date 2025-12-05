@@ -40,6 +40,7 @@
   "tooltip.bookeditor.go_to_page": "Aller à la page",
 
   "narrator.select.color": "Sélectionner une couleur",
+  "narrator.zoom.slider": "Curseur de Zoom",
 
   "screen.bookeditor.size_limit_reached": "Limite de taille du livre atteinte - modifications ultérieures désactivées",
   "screen.bookeditor.page_not_saved": "Page non enregistrée : limite de taille du livre atteinte",

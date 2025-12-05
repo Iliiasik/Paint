@@ -40,6 +40,7 @@
   "tooltip.bookeditor.go_to_page": "Sayfaya Git",
 
   "narrator.select.color": "Renk Seç",
+  "narrator.zoom.slider": "Yakınlaştırma Kaydırıcısı",
 
   "screen.bookeditor.size_limit_reached": "Kitap boyutu sınırına ulaşıldı — ek değişiklikler devre dışı",
   "screen.bookeditor.page_not_saved": "Sayfa kaydedilmedi: kitap boyutu sınırına ulaşıldı",

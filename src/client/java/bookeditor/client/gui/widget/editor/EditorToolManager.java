@@ -115,6 +115,16 @@ public class EditorToolManager {
         widget.setFocused(true);
         int mx = (int) mouseX;
         int my = (int) mouseY;
+        if (state.canPan() && button == 0 && state.mode == EditorMode.OBJECT_MODE
+                && state.imageInteraction.getSelectedImageIndex() < 0
+                && state.textBoxInteraction.getSelectedTextBoxIndex() < 0) {
+            state.isPanning = true;
+            state.panStartMouseX = mx;
+            state.panStartMouseY = my;
+            state.panStartOffsetX = state.panOffsetX;
+            state.panStartOffsetY = state.panOffsetY;
+            return true;
+        }
         if (state.textBoxCreationTool.isActive()) {
             historyManager.pushSnapshotOnce();
             BookData.TextBoxNode box = new BookData.TextBoxNode(
@@ -156,6 +166,14 @@ public class EditorToolManager {
     }
 
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dx, double dy) {
+        if (state.isPanning) {
+            int deltaX = (int) mouseX - state.panStartMouseX;
+            int deltaY = (int) mouseY - state.panStartMouseY;
+            state.panOffsetX = state.panStartOffsetX + deltaX;
+            state.panOffsetY = state.panStartOffsetY + deltaY;
+            state.clampPanOffset();
+            return true;
+        }
         if (state.eraserTool.isActive()) {
             state.eraserTool.erase(state.page, (int) mouseX, (int) mouseY, state.contentScreenLeft(), state.contentScreenTop(), state.scale(), state.scrollY);
             historyManager.notifyDirty();
@@ -172,6 +190,10 @@ public class EditorToolManager {
 
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
         EditorWidget widget = state.getWidget();
+        if (state.isPanning) {
+            state.isPanning = false;
+            return widget.superMouseReleased(mouseX, mouseY, button);
+        }
         boolean changed = false;
         if (state.imageInteraction.mouseReleased()) changed = true;
         if (state.textBoxInteraction.mouseReleased()) changed = true;

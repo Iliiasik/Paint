@@ -235,5 +235,25 @@ public class EditorWidget extends ClickableWidget {
         return state.page.strokes.size();
     }
 
+    public void setUserZoom(float zoom) {
+        state.setUserZoom(zoom);
+    }
+
+    public float getUserZoom() {
+        return state.userZoom;
+    }
+
+    public void resetZoomAndPan() {
+        state.resetZoomAndPan();
+    }
+
+    public boolean canPan() {
+        return state.canPan();
+    }
+
+    public boolean isAnyToolActive() {
+        return state.drawingTool.isActive() || state.eraserTool.isActive() || state.textBoxCreationTool.isActive();
+    }
+
 }
 
