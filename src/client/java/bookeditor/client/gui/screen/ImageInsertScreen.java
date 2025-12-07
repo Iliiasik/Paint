@@ -75,8 +75,12 @@ public class ImageInsertScreen extends Screen {
     }
 
     @Override
+    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+    }
+
+    @Override
     public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
-        this.renderBackground(ctx);
+        ctx.fill(0, 0, this.width, this.height, 0x88000000);
 
         int panelW = 260;
         int panelH = 120;

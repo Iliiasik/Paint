@@ -27,7 +27,7 @@ public class CustomButton extends ButtonWidget {
     }
 
     @Override
-    protected void renderButton(DrawContext ctx, int mouseX, int mouseY, float delta) {
+    public void renderWidget(DrawContext ctx, int mouseX, int mouseY, float delta) {
         long currentTime = System.currentTimeMillis();
         float deltaTime = (currentTime - lastFrameTime) / 1000.0f;
         lastFrameTime = currentTime;

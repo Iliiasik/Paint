@@ -2,10 +2,10 @@ package bookeditor.item;
 
 import bookeditor.data.BookData;
 import bookeditor.platform.Services;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -44,13 +44,13 @@ public class CreativeBookItem extends Item {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         BookData d = BookData.readFrom(stack);
         if (d.signed) {
             if (d.authorName != null && !d.authorName.isEmpty()) {
                 tooltip.add(Text.literal(d.authorName).setStyle(Style.EMPTY.withItalic(true).withColor(Formatting.BLUE)));
             }
         }
-        super.appendTooltip(stack, world, tooltip, context);
+        super.appendTooltip(stack, context, tooltip, type);
     }
 }

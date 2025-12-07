@@ -15,6 +15,7 @@ public class EditorRendererManager {
     private Identifier getBackgroundTexture() {
         return PlankTextureUtil.getTextureForPlank(state.plankType);
     }
+
     public void renderButton(DrawContext ctx, int mouseX, int mouseY, float delta) {
         state.updateSmooth();
         EditorWidget widget = state.getWidget();
@@ -50,6 +51,7 @@ public class EditorRendererManager {
             ctx.drawText(state.textRenderer, Text.literal(msg), centerX - textW / 2, textY, 0xFF000000, false);
         }
     }
+
     private void renderFrame(DrawContext ctx, EditorWidget widget) {
         int frame = 0xFF8B8B8B;
         int x = widget.getX();
@@ -72,11 +74,12 @@ public class EditorRendererManager {
                 int drawH = Math.min(textureSize, y + h - drawY);
 
                 if (drawW > 0 && drawH > 0) {
-                    ctx.drawTexture(backgroundTexture, drawX, drawY, 0, 0, drawW, drawH, textureSize, textureSize);
+                    ctx.drawTexture(backgroundTexture, drawX, drawY, drawW, drawH, 0.0f, 0.0f, drawW, drawH, textureSize, textureSize);
                 }
             }
         }
     }
+
     private void renderCanvas(DrawContext ctx) {
         int vLeft = state.canvasVisualLeft();
         int vTop = state.canvasVisualTop();
@@ -99,6 +102,7 @@ public class EditorRendererManager {
         ctx.fill(vLeft - 1, vTop, vLeft, vTop + vHeight, 0x33000000);
         ctx.fill(vLeft + vWidth, vTop, vLeft + vWidth + 1, vTop + vHeight, 0x33000000);
     }
+
     private void enableScissor(DrawContext ctx) {
         int vLeft = state.canvasVisualLeft();
         int vTop = state.canvasVisualTop();

@@ -49,7 +49,7 @@ public class NumericTextField extends TextFieldWidget {
     }
 
     @Override
-    public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
         int x = getX();
         int y = getY();
         int w = this.width;

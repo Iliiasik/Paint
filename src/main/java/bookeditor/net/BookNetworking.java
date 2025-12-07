@@ -2,66 +2,85 @@ package bookeditor.net;
 
 import bookeditor.Bookeditor;
 import bookeditor.data.BookData;
+import bookeditor.data.NbtSizeUtils;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.network.PacketByteBuf;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public final class BookNetworking {
-    private static final Logger LOGGER = Logger.getLogger(BookNetworking.class.getName());
+    public static final Identifier UPDATE_BOOK_ID = Identifier.of(Bookeditor.MODID, "update_book");
+    public static final Identifier UPDATE_BOOK_TOO_LARGE_ID = Identifier.of(Bookeditor.MODID, "update_book_too_large");
 
-    public static final Identifier UPDATE_BOOK = new Identifier(Bookeditor.MODID, "update_book");
-    public static final Identifier UPDATE_BOOK_TOO_LARGE = new Identifier(Bookeditor.MODID, "update_book_too_large");
+    public record UpdateBookPayload(Hand hand, NbtCompound nbt) implements CustomPayload {
+        public static final Id<UpdateBookPayload> ID = new Id<>(UPDATE_BOOK_ID);
+        public static final PacketCodec<RegistryByteBuf, UpdateBookPayload> CODEC = PacketCodec.of(
+                (value, buf) -> {
+                    buf.writeEnumConstant(value.hand);
+                    buf.writeNbt(value.nbt);
+                },
+                buf -> new UpdateBookPayload(buf.readEnumConstant(Hand.class), buf.readNbt())
+        );
+
+        @Override
+        public Id<? extends CustomPayload> getId() {
+            return ID;
+        }
+    }
+
+    public record UpdateBookTooLargePayload(String message) implements CustomPayload {
+        public static final Id<UpdateBookTooLargePayload> ID = new Id<>(UPDATE_BOOK_TOO_LARGE_ID);
+        public static final PacketCodec<RegistryByteBuf, UpdateBookTooLargePayload> CODEC = PacketCodec.of(
+                (value, buf) -> buf.writeString(value.message),
+                buf -> new UpdateBookTooLargePayload(buf.readString(32767))
+        );
+
+        @Override
+        public Id<? extends CustomPayload> getId() {
+            return ID;
+        }
+    }
 
     private BookNetworking() {}
 
     public static void registerServerReceivers() {
-        ServerPlayNetworking.registerGlobalReceiver(UPDATE_BOOK, (server, player, handler, buf, responseSender) -> {
-            Hand hand;
-            NbtCompound nbt;
-            try {
-                hand = buf.readEnumConstant(Hand.class);
-                try {
-                    nbt = buf.readNbt();
-                } catch (RuntimeException re) {
-                    PacketByteBuf resp = new PacketByteBuf(io.netty.buffer.Unpooled.buffer());
-                    resp.writeString("book_nbt_too_large");
-                    ServerPlayNetworking.send(player, UPDATE_BOOK_TOO_LARGE, resp);
-                    LOGGER.log(Level.WARNING, "BookNetworking: rejected incoming book NBT from player {0} - too large or invalid: {1}", new Object[]{player.getName().getString(), re.getMessage()});
-                    return;
-                }
-            } catch (Exception ex) {
-                LOGGER.log(Level.SEVERE, "BookNetworking: failed to parse incoming update packet: " + ex.getMessage(), ex);
+        PayloadTypeRegistry.playC2S().register(UpdateBookPayload.ID, UpdateBookPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(UpdateBookTooLargePayload.ID, UpdateBookTooLargePayload.CODEC);
+
+        ServerPlayNetworking.registerGlobalReceiver(UpdateBookPayload.ID, (payload, context) -> {
+            Hand hand = payload.hand();
+            NbtCompound nbt = payload.nbt();
+            ServerPlayerEntity player = context.player();
+
+            if (nbt == null) {
+                ServerPlayNetworking.send(player, new UpdateBookTooLargePayload("book_nbt_too_large"));
                 return;
             }
 
-            final Hand finalHand = hand;
-            final NbtCompound finalNbt = nbt;
-            server.execute(() -> applyOnServer(player, finalHand, finalNbt));
+            int nbtSize = NbtSizeUtils.getNbtByteSize(nbt);
+            int allowed = NbtSizeUtils.getAllowedMax();
+            if (nbtSize > allowed) {
+                ServerPlayNetworking.send(player, new UpdateBookTooLargePayload("book_nbt_too_large"));
+                return;
+            }
+
+            context.server().execute(() -> applyOnServer(player, hand, nbt));
         });
     }
 
     private static void applyOnServer(ServerPlayerEntity player, Hand hand, NbtCompound nbt) {
         if (nbt == null) return;
-        try {
-            ItemStack stack = player.getStackInHand(hand);
-            if (!stack.isEmpty() && stack.getItem() == Bookeditor.CREATIVE_BOOK) {
-                var root = stack.getOrCreateNbt();
-                try {
-                    root.put(BookData.ROOT, nbt);
-                    stack.setNbt(root);
-                } catch (Exception ex) {
-                    LOGGER.log(Level.SEVERE, "BookNetworking: failed to apply NBT to item for player " + player.getName().getString() + ": " + ex.getMessage(), ex);
-                }
-            }
-        } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "BookNetworking: unexpected error while applying book NBT: " + ex.getMessage(), ex);
+        ItemStack stack = player.getStackInHand(hand);
+        if (!stack.isEmpty() && stack.getItem() == Bookeditor.CREATIVE_BOOK) {
+            NbtCompound root = Bookeditor.getCustomData(stack);
+            root.put(BookData.ROOT, nbt);
+            Bookeditor.setCustomData(stack, root);
         }
     }
 }

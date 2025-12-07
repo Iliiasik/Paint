@@ -32,7 +32,7 @@ public class ColorPickerDropdown extends ClickableWidget {
     }
 
     @Override
-    protected void renderButton(DrawContext ctx, int mouseX, int mouseY, float delta) {
+    public void renderWidget(DrawContext ctx, int mouseX, int mouseY, float delta) {
         long currentTime = System.currentTimeMillis();
         float deltaTime = (currentTime - state.lastFrameTime) / 1000.0f;
         state.lastFrameTime = currentTime;

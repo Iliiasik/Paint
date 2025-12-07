@@ -176,12 +176,12 @@ public class EditorWidget extends ClickableWidget {
     }
 
     @Override
-    protected void renderButton(DrawContext ctx, int mouseX, int mouseY, float delta) {
+    public void renderWidget(DrawContext ctx, int mouseX, int mouseY, float delta) {
         rendererManager.renderButton(ctx, mouseX, mouseY, delta);
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         return toolManager.mouseScrolled();
     }
 

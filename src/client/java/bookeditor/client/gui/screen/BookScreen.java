@@ -14,7 +14,6 @@ import bookeditor.client.util.ImageCache;
 import bookeditor.data.BookData;
 import bookeditor.data.NbtSizeUtils;
 import bookeditor.client.gui.util.UiUtils;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -22,7 +21,6 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
@@ -47,7 +45,6 @@ public class BookScreen extends Screen implements WidgetHost {
     private boolean nbtTooLarge = false;
     private long currentNbtSize = 0L;
     private long nbtMax = NbtSizeUtils.getAllowedMax();
-    private boolean debugNbtOverlay = false;
 
     public BookScreen(net.minecraft.item.ItemStack stack, Hand hand) {
         super(Text.translatable("screen.bookeditor.title"));
@@ -135,13 +132,8 @@ public class BookScreen extends Screen implements WidgetHost {
         int size = NbtSizeUtils.measureNbtInPacket(this.hand, nbt);
         if (size < 0) {
             size = NbtSizeUtils.getNbtByteSize(nbt);
-            if (size < 0) {
-                PacketByteBuf tmp = PacketByteBufs.create();
-                tmp.writeNbt(nbt);
-                size = tmp.readableBytes();
-            }
         }
-        this.currentNbtSize = size;
+        this.currentNbtSize = Math.max(size, 0);
         this.nbtMax = NbtSizeUtils.getAllowedMax();
         if (size > this.nbtMax) {
             setNbtTooLarge(true);
@@ -257,7 +249,7 @@ public class BookScreen extends Screen implements WidgetHost {
 
     @Override
     public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
-        this.renderBackground(ctx);
+        this.renderBackground(ctx, mouseX, mouseY, delta);
         super.render(ctx, mouseX, mouseY, delta);
 
         if (data.signed) {
@@ -266,14 +258,6 @@ public class BookScreen extends Screen implements WidgetHost {
 
         LimitBadgeRenderer.renderLimit(ctx, textRenderer, this.width, MARGIN + 10, BTN_H, data, nbtTooLarge);
 
-        if (debugNbtOverlay) {
-            String cur = UiUtils.humanReadableBytes(currentNbtSize);
-            String max = UiUtils.humanReadableBytes(nbtMax);
-            double frac = nbtMax > 0 ? (currentNbtSize / (double) nbtMax) : 0.0;
-            int pct = (int)Math.round(frac * 100.0);
-            String s = String.format("NBT: %s / %s (%d%%) - clientMax=%d, serverConst=%d", cur, max, pct, nbtMax, PacketByteBuf.MAX_READ_NBT_SIZE);
-            ctx.drawText(textRenderer, Text.literal(s), 8, 8, 0xFFFFFF00, false);
-        }
 
         if (bookNavigator != null) {
             bookNavigator.renderPageCounter(ctx, textRenderer, data.pages.size());
@@ -371,14 +355,6 @@ public class BookScreen extends Screen implements WidgetHost {
     }
 
     private boolean handleControlShortcuts(int keyCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_N) {
-            boolean shift = (modifiers & GLFW.GLFW_MOD_SHIFT) != 0;
-            if (shift) {
-                this.debugNbtOverlay = !this.debugNbtOverlay;
-                return true;
-            }
-            return false;
-        }
         switch (keyCode) {
             case GLFW.GLFW_KEY_B:
                 toggleBold();

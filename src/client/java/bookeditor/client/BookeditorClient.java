@@ -23,21 +23,20 @@ public class BookeditorClient implements ClientModInitializer {
             BookData.ensureDefaults(stack, mc.player);
             mc.setScreen(new BookScreen(stack, hand));
         };
-        
-        Item creativeBook = Registries.ITEM.get(new Identifier("bookeditor", "creative_book"));
+
+        Item creativeBook = Registries.ITEM.get(Identifier.of("bookeditor", "creative_book"));
         ModelPredicateProviderRegistry.register(
                 creativeBook,
-                new Identifier("bookeditor", "signed"),
+                Identifier.of("bookeditor", "signed"),
                 (stack, world, entity, seed) -> {
                     BookData d = BookData.readFrom(stack);
                     return d.signed ? 1.0f : 0.0f;
                 }
         );
 
-        ClientPlayNetworking.registerGlobalReceiver(BookNetworking.UPDATE_BOOK_TOO_LARGE, (client, handler, buf, responseSender) -> {
-            buf.readString(32767);
-            client.execute(() -> {
-                var screen = client.currentScreen;
+        ClientPlayNetworking.registerGlobalReceiver(BookNetworking.UpdateBookTooLargePayload.ID, (payload, context) -> {
+            context.client().execute(() -> {
+                var screen = context.client().currentScreen;
                 if (screen instanceof BookScreen bs) {
                     bs.setNbtTooLarge(true);
                 }

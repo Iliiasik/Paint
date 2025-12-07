@@ -32,7 +32,7 @@ public abstract class CraftingResultSlotMixin {
 
         String plankType = findPlankInCrafting();
         if (plankType != null) {
-            NbtCompound root = stack.getOrCreateNbt();
+            NbtCompound root = Bookeditor.getCustomData(stack);
             NbtCompound bookData;
             if (root.contains("CreativeBook", NbtElement.COMPOUND_TYPE)) {
                 bookData = root.getCompound("CreativeBook");
@@ -41,7 +41,7 @@ public abstract class CraftingResultSlotMixin {
             }
             bookData.putString("plankType", plankType);
             root.put("CreativeBook", bookData);
-            stack.setNbt(root);
+            Bookeditor.setCustomData(stack, root);
         }
     }
 
@@ -58,4 +58,3 @@ public abstract class CraftingResultSlotMixin {
         return null;
     }
 }
-

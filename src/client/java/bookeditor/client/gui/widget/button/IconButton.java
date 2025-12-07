@@ -33,7 +33,7 @@ public class IconButton extends ButtonWidget {
     }
 
     @Override
-    protected void renderButton(DrawContext ctx, int mouseX, int mouseY, float delta) {
+    public void renderWidget(DrawContext ctx, int mouseX, int mouseY, float delta) {
         long currentTime = System.currentTimeMillis();
         float deltaTime = (currentTime - lastFrameTime) / 1000.0f;
         lastFrameTime = currentTime;
@@ -76,22 +76,7 @@ public class IconButton extends ButtonWidget {
         int iconX = x + (w - renderSize) / 2;
         int iconY = y + (h - renderSize) / 2;
 
-        ctx.getMatrices().push();
-        ctx.getMatrices().translate(iconX, iconY, 0);
-        float scale = renderSize / (float) iconSize;
-        ctx.getMatrices().scale(scale, scale, 1.0f);
-
-        int tint = active ? 0xFFFFFFFF : 0xFF808080;
-        ctx.setShaderColor(
-                ((tint >> 16) & 0xFF) / 255.0f,
-                ((tint >> 8) & 0xFF) / 255.0f,
-                (tint & 0xFF) / 255.0f,
-                ((tint >> 24) & 0xFF) / 255.0f
-        );
-        ctx.drawTexture(iconTexture, 0, 0, 0, 0, iconSize, iconSize, iconSize, iconSize);
-        ctx.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-        ctx.getMatrices().pop();
+        ctx.drawTexture(iconTexture, iconX, iconY, renderSize, renderSize, 0.0f, 0.0f, iconSize, iconSize, iconSize, iconSize);
     }
 
     private int interpolateColor(int color1, int color2, float t) {

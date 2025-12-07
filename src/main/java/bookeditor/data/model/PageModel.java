@@ -7,12 +7,8 @@ import bookeditor.data.BookDataUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class PageModel {
-    private static final Logger LOGGER = Logger.getLogger(PageModel.class.getName());
-
     public final List<NodeModel> nodes = new ArrayList<>();
     public final List<StrokeModel> strokes = new ArrayList<>();
     public int bgArgb = 0xFFF8F8F8;
@@ -25,8 +21,7 @@ public class PageModel {
             if (addedNodes >= BookDataUtils.MAX_NODES_PER_PAGE) break;
             try {
                 list.add(n.toNbt());
-            } catch (RuntimeException ex) {
-                LOGGER.log(Level.WARNING, "PageModel: failed to serialize node, skipping: {0}", ex.getMessage());
+            } catch (RuntimeException ignored) {
             }
             addedNodes++;
         }
@@ -38,8 +33,7 @@ public class PageModel {
             if (addedStrokes >= BookDataUtils.MAX_STROKES_PER_PAGE) break;
             try {
                 strokesNbt.add(s.toNbt());
-            } catch (RuntimeException ex) {
-                LOGGER.log(Level.WARNING, "PageModel: failed to serialize stroke, skipping: {0}", ex.getMessage());
+            } catch (RuntimeException ignored) {
             }
             addedStrokes++;
         }
@@ -56,8 +50,7 @@ public class PageModel {
         for (int i = 0; i < nodeLimit; i++) {
             try {
                 p.nodes.add(NodeModel.fromNbt(list.getCompound(i)));
-            } catch (RuntimeException ex) {
-                LOGGER.log(Level.WARNING, "PageModel: skipped node {0} due to error: {1}", new Object[]{i, ex.getMessage()});
+            } catch (RuntimeException ignored) {
             }
         }
 
@@ -67,8 +60,7 @@ public class PageModel {
             for (int i = 0; i < strokeLimit; i++) {
                 try {
                     p.strokes.add(StrokeModel.fromNbt(sList.getCompound(i)));
-                } catch (RuntimeException ex) {
-                    LOGGER.log(Level.WARNING, "PageModel: skipped stroke {0} due to error: {1}", new Object[]{i, ex.getMessage()});
+                } catch (RuntimeException ignored) {
                 }
             }
         }

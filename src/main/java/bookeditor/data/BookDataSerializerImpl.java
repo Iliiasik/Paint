@@ -1,12 +1,11 @@
 package bookeditor.data;
 
+import bookeditor.Bookeditor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
 
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class BookDataSerializerImpl implements IBookDataSerializer {
 
@@ -14,11 +13,10 @@ public class BookDataSerializerImpl implements IBookDataSerializer {
     private static final int MAX_AUTHOR_LEN = 256;
     private static final int MAX_PAGES = 256;
     private static final int MAX_PLANK_TYPE_LEN = 128;
-    private static final Logger LOGGER = Logger.getLogger(BookDataSerializerImpl.class.getName());
 
     @Override
     public void ensureDefaults(ItemStack stack, PlayerEntity player) {
-        NbtCompound root = stack.getOrCreateNbt();
+        NbtCompound root = Bookeditor.getCustomData(stack);
         if (!root.contains(BookData.ROOT, NbtElement.COMPOUND_TYPE)) {
             BookData data = new BookData();
             data.title = "";
@@ -37,7 +35,7 @@ public class BookDataSerializerImpl implements IBookDataSerializer {
     public BookData readFrom(ItemStack stack) {
         BookData d = new BookData();
         try {
-            NbtCompound root = stack.getOrCreateNbt();
+            NbtCompound root = Bookeditor.getCustomData(stack);
             if (!root.contains(BookData.ROOT, NbtElement.COMPOUND_TYPE)) {
                 return d;
             }
@@ -64,13 +62,11 @@ public class BookDataSerializerImpl implements IBookDataSerializer {
             for (int i = 0; i < pageCount; i++) {
                 try {
                     d.pages.add(BookData.Page.fromNbt(pages.getCompound(i)));
-                } catch (RuntimeException ex) {
-                    LOGGER.log(Level.WARNING, "BookDataSerializer: skipped page {0} due to error: {1}", new Object[]{i, ex.getMessage()});
+                } catch (RuntimeException ignored) {
                 }
             }
 
         } catch (RuntimeException e) {
-            LOGGER.log(Level.SEVERE, "BookDataSerializer: failed to read NBT for book item: " + e.getMessage(), e);
             return d;
         }
         return d;
@@ -78,9 +74,9 @@ public class BookDataSerializerImpl implements IBookDataSerializer {
 
     @Override
     public void writeTo(ItemStack stack, BookData data) {
-        NbtCompound root = stack.getOrCreateNbt();
+        NbtCompound root = Bookeditor.getCustomData(stack);
         root.put(BookData.ROOT, toNbt(data));
-        stack.setNbt(root);
+        Bookeditor.setCustomData(stack, root);
     }
 
     @Override
@@ -106,8 +102,7 @@ public class BookDataSerializerImpl implements IBookDataSerializer {
                 NbtCompound pn = p.toNbt();
                 pages.add(pn);
                 added++;
-            } catch (RuntimeException ex) {
-                LOGGER.log(Level.WARNING, "BookDataSerializer: failed to serialize a page, skipping it: {0}", ex.getMessage());
+            } catch (RuntimeException ignored) {
             }
         }
         cb.put(BookData.PAGES, pages);
