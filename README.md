@@ -1,8 +1,8 @@
 <p align="center">
-  <a href="https://modrinth.com/mod/paint-editor">
-    <img src="https://img.shields.io/modrinth/dt/paint-editor?color=green&style=for-the-badge&logo=modrinth" alt="Modrinth Downloads"/>
+  <a href="https://modrinth.com/mod/paint-book">
+    <img src="https://img.shields.io/modrinth/dt/paint-book?color=green&style=for-the-badge&logo=modrinth" alt="Modrinth Downloads"/>
   </a><br>
-<a href="https://www.curseforge.com/minecraft/mc-mods/paint-editor">
+<a href="https://www.curseforge.com/minecraft/mc-mods/paint-book">
   <img src="https://cf.way2muchnoise.eu/full_1368235_downloads.svg" alt="CurseForge Downloads" />
 </a><br>
   <a href="https://www.codefactor.io/repository/github/iliiasik/paint/overview/1.20.1">
